@@ -2,8 +2,30 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+module.exports = function (db) {
+  router.get('/', function(req, res, next) {
+    res.render('login');
+  });
 
-module.exports = router;
+  router.post('/login', function(req, res, next) {
+    res.redirect('/utama');
+  });
+
+  router.get('/utama', function(req, res, next) {
+    res.render('utama');
+  });
+
+  router.get('/register', function(req, res, next) {
+    res.render('register');
+  });
+
+  router.post('/register', function(req, res, next) {
+    res.render('register');
+  });
+
+  router.get('/logout', function(req, res, next) {
+    res.redirect('/')
+  });
+
+  return router;
+}

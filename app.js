@@ -4,8 +4,22 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const { Pool } = require('pg')
+const pool = new Pool({
+  user: 'abaz.id',
+  host: 'localhost',
+  database: 'posdb',
+  password: '1234',
+  port: 5432,
+})
+
+var indexRouter = require('./routes/index')(pool)
+var gudangRouter = require('./routes/gudang')(pool)
+
+// var barangRouter = require('./routes/barang');
+// var penjualanRouter = require('./routes/penjualan');
+// var usersRouter = require('./routes/users');
+
 
 var app = express();
 
@@ -20,7 +34,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/gudang', gudangRouter);
+// app.use('/barang', barangRouter);
+// app.use('/penjualan', penjualanRouter);
+// app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
