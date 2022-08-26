@@ -37,32 +37,32 @@
                                     <h4 class="card-title mb-4">Pencarian Data</h4>
                                     <div class="row">
                                         <form id="form-search">
-
+                                            <input type="hidden" name="page" value="1">
                                             <div class="row mb-3">
-                                                <label for="searchString"
-                                                    class="col-sm-2 col-form-label">Invoice</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="searchString"
-                                                        name="searchString" placeholder="Tulis Invoice">
+                                                <label for="cari_id"
+                                                    class="col-sm-4 col-form-label">ID Gudang</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="cari_id"
+                                                        name="cari_id" placeholder="<%=query.cari_id==undefined ? 'Tulis ID Gudang' : 'Tulis ID Gudang'%>" 
+                                                        value="<%=query.cari_id%>">
                                                 </div>
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="searchDate" class="col-sm-2 col-form-label" id="searchDate"
-                                                    name="searchDate" for="searchDate">Date</label>
-                                                <div class="col-sm-4">
-                                                    <input type="date" id="searchStartDate" name="searchStartDate"
-                                                        class="form-control" placeholder="Tulis Date">
-                                                    <label class="col-sm-4 col-form-label">to</label>
-                                                    <input type="date" id="searchEndDate" name="searchEndDate"
-                                                        class="form-control" placeholder="Tulis Date">
+                                                <label for="cari_nama"
+                                                    class="col-sm-4 col-form-label">Nama Gudang</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="cari_nama"
+                                                        name="cari_nama" placeholder="Tulis Nama Gudang" 
+                                                        value="<%=query.cari_nama%>">
                                                 </div>
                                             </div>
+                                           
 
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary">Cari</button>
 
-                                                <a href="/jquery.html" class="btn btn-warning">Reset</a>
+                                                <a href="/gudang" class="btn btn-warning">Reset</a>
                                             </div>
 
                                         </form>
@@ -81,8 +81,13 @@
                                         <table class="table align-middle table-nowrap table-check">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th class="align-middle">No</th>
-                                                    <th class="align-middle">ID Gudang</th>
+                                                    <th class="align-middle">
+                                                    <a href="<%=`/gudang?page=${page}${filter}`%><%= sortBy == 'id_gudang' && sortMode == 'asc' ? "&sortBy=id_gudang&sortMode=desc" : "&sortBy=id_gudang&sortMode=asc" %>">
+                                                        <i
+                                                            class="fa-solid fa-<%= query.sortBy == 'id_gudang' ? query.sortMode == 'asc' ? 'arrow-up-1-9' : 'arrow-up-9-1' : 'sort' %>"></i>
+                                                        ID Gudang
+                                                    </a>
+                                                    </th>
                                                     <th class="align-middle">Nama Gudang</th>
                                                     <th class="align-middle">Alamat</th>
                                                     <th class="align-middle">Actions</th>
@@ -91,9 +96,6 @@
                                             <tbody>
                                                 <% rows.forEach((item, index)=> { %>
                                                 <tr>
-                                                    <td>
-                                                        <%=index + 1%>
-                                                    </td>
                                                     <td>
                                                         <%=item.id_gudang%>
                                                     </td>
@@ -107,7 +109,7 @@
                                                         <div class="d-flex gap-3">
                                                             <a href="javascript:void(0);" class="text-pri"><i class="fa-solid fa-print"></i></a>
                                                             <a href="/gudang/edit/<%= item.id_gudang %>" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="/gudang/edit/<%= item.id_gudang %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                                            <a href="/gudang/delete/<%= item.id_gudang %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -124,22 +126,40 @@
                                         </div>
                                         <div class="col-sm-8">
                                             <ul class="pagination pagination-rounded justify-content-end mb-2">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="javascript: void(0);" aria-label="Previous">
-                                                        <i class="fa-solid fa-angle-left"></i>
+                                                
+                                                <li class="page-item">
+                                                    <%if (page !=1 ) { %>
+                                                        <a class="page-link"
+                                                            href="<%=url.replace(`page=${page}`,`page=${parseInt(page)-1}`)%>"><i class="fa-solid fa-angle-left"></i></a>
+                                                        <% } %>
+                                                </li>
+
+                                                <% for (let i = 1; i <=pages; i++) { %>
+                                                <li class="page-item <%= i == page ? 'active' : '' %>" aria-current="page">
+                                                    <a class="page-link" href="<%=url.includes('gudang' url.replace(`page=${page}`,`gudang?page=${i}`)) %>">
+                                                        <!-- `/gudang?page=${page}${filter}` -->
+                                                        <%= i %>
                                                     </a>
                                                 </li>
-                                                <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
-                                                <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                                                <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
-                                                <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
-                                                <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="javascript: void(0);" aria-label="Next">
-                                                        <i class="fa-solid fa-angle-right"></i>
+                                                <% } %>
+
+                                                
+                                                <!-- <% for (let i=1; i <=pages; i++) { %> 
+                                                    <li class="page-item<%= i == page ? ' active' : '' %>"><a class="page-link" href="<%= url.includes(`&page=${page}`) ? url.replace(`&page=${page}`, `&page=${i}`) : `/gudang?page=${i}` %>"
+                                                     ><%= i %>
                                                     </a>
+                                                </li>
+                                                     <% } %> -->
+
+                                                <li class="page-item">
+                                                    <%if (page <=pages && page !=pages) { %>
+                                                        <a class="page-link"
+                                                            href="<%=url.replace(`page=${page}`,`page=${parseInt(page)+1}`)%>"><i class="fa-solid fa-angle-right"></i></a>
+                                                        <% } %>
                                                 </li>
                                             </ul>
+
+                                            
                                         </div><!-- end col-->
                                     </div>
 

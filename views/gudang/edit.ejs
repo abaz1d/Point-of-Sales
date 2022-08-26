@@ -141,31 +141,31 @@
                         <div class="card">
                             <div class="card-body">
 
-                                <form id="form-user">
+                                <form action="" method="post" id="form-user">
 
                                     <div class="row mb-3">
-                                        <label for="Kode Gudang" class="col-sm-2 col-form-label">Kode Gudang</label>
+                                        <label for="id_gudang" class="col-sm-2 col-form-label">ID Gudang</label>
                                         <div class="col-sm-10">
-                                            <input type="Kode Gudang" id="Kode Gudang" class="form-control"
-                                                name='Kode Gudang' readonly>
+                                            <input type="text" class="form-control" id="id_gudang" value="<%=item.id_gudang%>"
+                                                name='id_gudang' disabled>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="Nama Gudang" class="col-sm-2 col-form-label">Nama Gudang</label>
+                                        <label for="nama_gudang" class="col-sm-2 col-form-label">Nama Gudang</label>
                                         <div class="col-sm-10">
-                                            <input type="string" class="form-control" id="Nama Gudang"
-                                                name='Nama Gudang' required>
+                                            <input type="text" class="form-control" id="nama_gudang" value="<%=item.nama_gudang%>"
+                                                name='nama_gudang' required>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
+                                        <label for="alamat_gudang" class="col-sm-2 col-form-label">Alamat Gudang</label>
                                         <p class="card-title-desc">Contoh : <br> Jl. H. Mahdi II No.89, Cisaranten
                                             Wetan, Kec. Cinambo, ota Bandung, Jawa Barat, 40293
                                         <div>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1"
-                                                rows="3"></textarea>
+                                            <input type="text" class="form-control" id="alamat_gudang" value="<%=item.alamat_gudang%>"
+                                            name='alamat_gudang' required>
                                         </div>
                                     </div>
 
