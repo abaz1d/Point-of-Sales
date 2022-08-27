@@ -15,6 +15,7 @@ const pool = new Pool({
 
 var indexRouter = require('./routes/index')(pool)
 var gudangRouter = require('./routes/gudang')(pool)
+var satuanRouter = require('./routes/satuan')(pool)
 
 // var barangRouter = require('./routes/barang');
 // var penjualanRouter = require('./routes/penjualan');
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/gudang', gudangRouter);
+app.use('/satuan', satuanRouter);
 // app.use('/barang', barangRouter);
 // app.use('/penjualan', penjualanRouter);
 // app.use('/users', usersRouter)

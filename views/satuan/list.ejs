@@ -14,11 +14,11 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0 font-size-18">Gudang</h4>
+                                <h4 class="mb-sm-0 font-size-18">Satuan</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Gudang</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Satuan</a></li>
                                         <li class="breadcrumb-item active">List</li>
                                     </ol>
                                 </div>
@@ -40,17 +40,17 @@
                                             <input type="hidden" name="page" value="1">
                                             <div class="row mb-3">
                                                 <label for="cari_id"
-                                                    class="col-sm-4 col-form-label">ID Gudang</label>
+                                                    class="col-sm-4 col-form-label">ID Satuan</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="cari_id"
-                                                        name="cari_id" placeholder="<%=query.cari_id==undefined ? 'Tulis ID Gudang' : 'Tulis ID Gudang'%>" 
+                                                        name="cari_id" placeholder="<%=query.cari_id==undefined ? 'Tulis ID Satuan' : 'Tulis ID Satuan'%>" 
                                                         value="<%=query.cari_id%>">
                                                 </div>
                                             </div>
 
                                             <div class="row mb-3">
                                                 <label for="cari_nama"
-                                                    class="col-sm-4 col-form-label">Nama Gudang</label>
+                                                    class="col-sm-4 col-form-label">Nama Satuan</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="cari_nama"
                                                         name="cari_nama" placeholder="Tulis Nama Gudang" 
@@ -62,7 +62,7 @@
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary">Cari</button>
 
-                                                <a href="/gudang" class="btn btn-warning">Reset</a>
+                                                <a href="/satuan" class="btn btn-warning">Reset</a>
                                             </div>
 
                                         </form>
@@ -82,14 +82,13 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th class="align-middle">
-                                                    <a href="<%=`/gudang?page=${page}${filter}`%><%= sortBy == 'id_gudang' && sortMode == 'asc' ? "&sortBy=id_gudang&sortMode=desc" : "&sortBy=id_gudang&sortMode=asc" %>">
+                                                    <a href="<%=`/satuan?page=${page}${filter}`%><%= sortBy == 'id_satuan' && sortMode == 'asc' ? "&sortBy=id_satuan&sortMode=desc" : "&sortBy=id_satuan&sortMode=asc" %>">
                                                         <i
-                                                            class="fa-solid fa-<%= query.sortBy == 'id_gudang' ? query.sortMode == 'asc' ? 'arrow-up-1-9' : 'arrow-up-9-1' : 'sort' %>"></i>
-                                                        ID Gudang
+                                                            class="fa-solid fa-<%= query.sortBy == 'id_satuan' ? query.sortMode == 'asc' ? 'arrow-up-1-9' : 'arrow-up-9-1' : 'sort' %>"></i>
+                                                        ID Satuan
                                                     </a>
                                                     </th>
-                                                    <th class="align-middle">Nama Gudang</th>
-                                                    <th class="align-middle">Alamat</th>
+                                                    <th class="align-middle">Nama Satuan</th>
                                                     <th class="align-middle">Actions</th>
                                                 </tr>
                                             </thead>
@@ -97,13 +96,11 @@
                                                 <% rows.forEach((item, index)=> { %>
                                                 <tr>
                                                     <td>
-                                                        <%=item.id_gudang%>
+                                                        <%=item.id_satuan%>
                                                     </td>
                                                     <td>
-                                                        <%=item.nama_gudang%>
-                                                    </td>
-                                                    <td>
-                                                        <%=item.alamat_gudang%>
+                                                        <%=item.nama_satuan%>
+                                                         <a href="#" title="<%=item.keterangan_satuan%>" data-toggle="popover" data-trigger="focus"><i class="fa-solid fa-circle-info"></i></a>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex gap-3">
@@ -189,9 +186,10 @@
             </footer>
         </div>
         <script>
-
-            
-        </script>
+            $(document).ready(function(){
+              $('[data-toggle="popover"]').popover();
+            });
+            </script>
         <!-- end main content-->
 
         <%- include('../partials/footer') %>
