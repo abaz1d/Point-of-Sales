@@ -14,11 +14,11 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0 font-size-18">Gudang</h4>
+                                <h4 class="mb-sm-0 font-size-18">Supplier</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Gudang</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Supplier</a></li>
                                         <li class="breadcrumb-item active">List</li>
                                     </ol>
                                 </div>
@@ -37,41 +37,61 @@
                                     <h4 class="card-title mb-4">Pencarian Data</h4>
                                     <div class="row">
                                         <form id="form-search">
-                                           
+
                                             <div class="row mb-3">
                                                 <label for="cari_id"
-                                                    class="col-sm-4 col-form-label">ID Gudang</label>
+                                                    class="col-sm-4 col-form-label">ID Supplier</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="cari_id"
-                                                        name="cari_id" placeholder="Tulis ID Gudang"
+                                                    <input type="number" class="form-control" id="cari_id"
+                                                        name="cari_id" placeholder="Tulis ID"
                                                         value="<%=query.cari_id%>">
                                                 </div>
                                             </div>
 
                                             <div class="row mb-3">
                                                 <label for="cari_nama"
-                                                    class="col-sm-4 col-form-label">Nama Gudang</label>
+                                                    class="col-sm-4 col-form-label">Nama Supplier</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="cari_nama"
-                                                        name="cari_nama" placeholder="Tulis Nama Gudang" 
+                                                        name="cari_nama" placeholder="Tulis Nama"
                                                         value="<%=query.cari_nama%>">
                                                 </div>
                                             </div>
-                                           
+                                            
                                             <div class="row mb-3">
                                                 <label for="cari_alamat"
-                                                    class="col-sm-4 col-form-label">Alamat Gudang</label>
+                                                    class="col-sm-4 col-form-label">Alamat Supplier</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="cari_alamat"
-                                                        name="cari_alamat" placeholder="Tulis Alamat Gudang" 
+                                                        name="cari_alamat" placeholder="Tulis Alamat"
                                                         value="<%=query.cari_alamat%>">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="cari_telepon"
+                                                    class="col-sm-4 col-form-label">Telepon Supplier</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" class="form-control" id="cari_telepon"
+                                                        name="cari_telepon" placeholder="Tulis Telepon"
+                                                        value="<%=query.cari_telepon%>">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="cari_email"
+                                                    class="col-sm-4 col-form-label">Email Supplier</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="cari_email"
+                                                        name="cari_email" placeholder="Tulis Email"
+                                                        value="<%=query.cari_email%>">
                                                 </div>
                                             </div>
 
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary">Cari</button>
 
-                                                <a href="/gudang" class="btn btn-warning">Reset</a>
+                                                <a href="/supplier" class="btn btn-warning">Reset</a>
                                             </div>
 
                                         </form>
@@ -84,34 +104,45 @@
                         <div class="col-xl-8">
                             <div class="card">
                                 <div class="card-body">
-                                    
-                                    <h4 class="card-title mb-4">Tabel Data Gudang</h4>
+
+                                    <h4 class="card-title mb-4">Tabel Data supplier</h4>
                                     <div class="table-responsive">
                                         <table class="table align-middle table-nowrap table-check">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th class="align-middle">ID Gudang</th>
-                                                    <th class="align-middle">Nama Gudang</th>
-                                                    <th class="align-middle">Alamat</th>
-                                                    <th class="align-middle">Actions</th>
+                                                        <th class="align-middle">ID Supplier</th>
+                                                        <th class="align-middle">Nama Supplier</th>
+                                                        <th class="align-middle">Alamat Supplier</th>
+                                                        <th class="align-middle">Kontak</th>
+                                                        <th class="align-middle">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% rows.forEach((item, index)=> { %>
                                                 <tr>
                                                     <td>
-                                                        <%=item.id_gudang%>
+                                                        <%=item.id_supplier%>
                                                     </td>
                                                     <td>
-                                                        <%=item.nama_gudang%>
+                                                        <%=item.nama_supplier%>
                                                     </td>
                                                     <td>
-                                                        <%=item.alamat_gudang%>
+                                                        <%=item.alamat_supplier%>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <tr>
+                                                              <td class="border-bottom border-dark"><i class="fa-solid fa-phone"></i> | +62  <%=item.telepon_supplier%></td>
+                                                            </tr>
+                                                            <tr>
+                                                              <td class="border-top border-dark"><i class="fa-solid fa-envelope"></i> |  <%=item.email_supplier%></td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex gap-3">
-                                                            <a href="/gudang/edit/<%= item.id_gudang %>" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="/gudang/delete/<%= item.id_gudang %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                                            <a href="/supplier/edit/<%= item.id_supplier %>" class="text-success"><i class="fa-solid fa-pencil"></i></a>
+                                                            <a href="/supplier/delete/<%= item.id_supplier %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -121,12 +152,11 @@
                                     </div>
 
                                     <div class="row mb-2">
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-4">
                                             <div class="text-sm-left">
-                                                <a href="/gudang/add" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="fa-solid fa-plus"></i> Tambah Gudang </a>
+                                                <a href="/supplier/add" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="fa-solid fa-plus"></i> Tambah Supplier </a>
                                             </div>
                                         </div>
-                                        
                                     </div>
 
                                 </div>
@@ -155,9 +185,10 @@
             </footer>
         </div>
         <script>
-
-            
-        </script>
+            $(document).ready(function(){
+              $('[data-toggle="popover"]').popover();
+            });
+            </script>
         <!-- end main content-->
 
         <%- include('../partials/footer') %>

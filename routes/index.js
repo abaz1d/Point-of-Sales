@@ -15,6 +15,10 @@ module.exports = function (db) {
     res.render('utama');
   });
 
+  router.get('/collapse', function(req, res, next) {
+    res.render('collapse');
+  });
+
   router.get('/register', function(req, res, next) {
     res.render('register');
   });

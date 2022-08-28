@@ -6,96 +6,83 @@ var moment = require('moment')
 module.exports = function (db) {
 
   router.get('/', async function (req, res, next) {
-
-    //const { cari_id, cari_nama } = req.query
-    const page = req.query.page || 1;
-    const url = req.url == '/' ? '/?page=1' : req.url;
-    //const url = `${req.url}satuan` == '/satuan' ? '/satuan?page=1' : `${req.url}satuan`;
-    // let url = req.url 
-    
-    // if(url == '/')  
-    // url = 'satuan/?page=1'
-    // else if(url == '/satuan')
-    // url == `satuan/?page=${page}`
-    // else
-    // url == req.url
-
-
-    // if (req.url === '/') {
-    //   url = '/satuan?page=1'
-    // } else {
-    //   if (req.url.includes('/satuan?page')) {
-    //     url = req.url
-    //   } else {
-    //     if (req.url.includes('&page=')) {
-    //       url = req.url
-    //     } else {
-    //       if (req.url.includes('&page=')) {
-    //       } else {
-    //         url = req.url + `&page=${page}`
-    //       }
-    //     }
-    //   }
-    // }
-
-    
-    const limit = 2;
-    const offset = (page - 1) * limit;
+    try {
     let wheres = []
     let values = []
     let count = 1
 
-
-    const filter = `&cari_id=${req.query.cari_id}&cari_nama=${req.query.cari_nama}`
-
-    var sortBy = req.query.sortBy == undefined ? `id_satuan` : req.query.sortBy;
-    var sortMode = req.query.sortMode == undefined ? `asc` : req.query.sortMode;
-
-    if (req.query.cari_id && req.query.cari_id == undefined) {
+    if (req.query.cari_id) {
       wheres.push(`id_satuan ilike '%' || $${count++} || '%'`);
       values.push(req.query.cari_id);
     }
 
-    if (req.query.cari_nama && req.query.cari_nama == undefined) {
+    if (req.query.cari_nama) {
       wheres.push(`nama_satuan ilike '%' || $${count++} || '%'`);
       values.push(req.query.cari_nama);
     }
 
-    let sql = 'SELECT COUNT(*) AS total FROM satuan';
-    if (wheres.length > 0) {
-      sql += ` WHERE ${wheres.join(' AND ')}`
-    }
-    try {
-      //console.log('sql', sql)
-      const data = await db.query(sql, values);
-      //console.log('data', data)
-
-      const pages = Math.ceil(data.rows[0].total / limit)
       sql = 'SELECT * FROM satuan'
       if (wheres.length > 0) {
         sql += ` WHERE ${wheres.join(' AND ')}`
       }
-      sql += ` ORDER BY ${sortBy} ${sortMode} LIMIT $${count++} OFFSET $${count++}`;
 
-      console.log('sql', sql)
-      console.log('req.url', req.url)
-      console.log('url', url)
+      sql += ' ORDER BY id_satuan'
+      
+      const { rows } = await db.query(sql,values);
 
-
-
-      const { rows } = await db.query(sql, [...values, limit, offset]);
-      //console.log('rows', rows)
       res.render('satuan/list', {
         rows,
-        pages,
-        page,
-        link: req.url,
-        url,
-        query: req.query,
-        filter,
-        sortBy,
-        sortMode
+
+        query: req.query
       })
+    } catch (e) {
+      res.send(e)
+    }
+  });
+
+  router.get('/add', async function (req, res, next) {
+    try {
+      res.render('satuan/add')
+    } catch (e) {
+      res.send(e)
+    }
+  });
+
+  router.post('/add', async function (req, res, next) {
+    try {
+      const { rows } = await db.query('INSERT INTO satuan(nama_satuan,keterangan_satuan) VALUES ($1, $2)',
+        [req.body.nama_satuan, req.body.keterangan_satuan])
+      res.redirect('/satuan')
+    } catch (e) {
+      res.send(e)
+    }
+  });
+
+  router.get('/edit/:id', async function (req, res, next) {
+    try {
+      const { rows } = await db.query('SELECT * FROM satuan WHERE id_satuan = $1', [req.params.id])
+      res.render('satuan/edit', { item: rows[0] });
+    } catch (e) {
+      res.send(e)
+    }
+  });
+
+  router.post('/edit/:id', async function (req, res, next) {
+    try {
+      const { rows } = await db.query(`UPDATE satuan SET 
+      nama_satuan = $1,
+      keterangan_satuan = $2
+      WHERE id_satuan = $3`, [req.body.nama_satuan, req.body.keterangan_satuan, req.params.id])
+      res.redirect('/satuan')
+    } catch (e) {
+      res.send(e)
+    }
+  });
+
+  router.get('/delete/:id', async function (req, res, next) {
+    try {
+      const { rows } = await db.query('DELETE FROM satuan WHERE id_satuan = $1', [req.params.id])
+      res.redirect('/satuan')
     } catch (e) {
       res.send(e)
     }

@@ -16,10 +16,11 @@ const pool = new Pool({
 var indexRouter = require('./routes/index')(pool)
 var gudangRouter = require('./routes/gudang')(pool)
 var satuanRouter = require('./routes/satuan')(pool)
+var supplierRouter = require('./routes/supplier')(pool)
 
-// var barangRouter = require('./routes/barang');
+var barangRouter = require('./routes/barang')(pool);
 // var penjualanRouter = require('./routes/penjualan');
-// var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/users')(pool);
 
 
 var app = express();
@@ -37,9 +38,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/gudang', gudangRouter);
 app.use('/satuan', satuanRouter);
-// app.use('/barang', barangRouter);
+app.use('/supplier', supplierRouter);
+app.use('/barang', barangRouter);
 // app.use('/penjualan', penjualanRouter);
-// app.use('/users', usersRouter)
+app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

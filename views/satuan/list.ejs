@@ -43,7 +43,7 @@
                                                     class="col-sm-4 col-form-label">ID Satuan</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="cari_id"
-                                                        name="cari_id" placeholder="<%=query.cari_id==undefined ? 'Tulis ID Satuan' : 'Tulis ID Satuan'%>" 
+                                                        name="cari_id" placeholder="Tulis ID Satuan"
                                                         value="<%=query.cari_id%>">
                                                 </div>
                                             </div>
@@ -53,7 +53,7 @@
                                                     class="col-sm-4 col-form-label">Nama Satuan</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="cari_nama"
-                                                        name="cari_nama" placeholder="Tulis Nama Gudang" 
+                                                        name="cari_nama" placeholder="Tulis Nama Satuan" 
                                                         value="<%=query.cari_nama%>">
                                                 </div>
                                             </div>
@@ -75,19 +75,13 @@
                         <div class="col-xl-8">
                             <div class="card">
                                 <div class="card-body">
-                                    
-            
+
+                                    <h4 class="card-title mb-4">Tabel Data Satuan</h4>
                                     <div class="table-responsive">
                                         <table class="table align-middle table-nowrap table-check">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th class="align-middle">
-                                                    <a href="<%=`/satuan?page=${page}${filter}`%><%= sortBy == 'id_satuan' && sortMode == 'asc' ? "&sortBy=id_satuan&sortMode=desc" : "&sortBy=id_satuan&sortMode=asc" %>">
-                                                        <i
-                                                            class="fa-solid fa-<%= query.sortBy == 'id_satuan' ? query.sortMode == 'asc' ? 'arrow-up-1-9' : 'arrow-up-9-1' : 'sort' %>"></i>
-                                                        ID Satuan
-                                                    </a>
-                                                    </th>
+                                                    <th class="align-middle">ID Satuan</th>
                                                     <th class="align-middle">Nama Satuan</th>
                                                     <th class="align-middle">Actions</th>
                                                 </tr>
@@ -104,9 +98,8 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex gap-3">
-                                                            <a href="javascript:void(0);" class="text-pri"><i class="fa-solid fa-print"></i></a>
-                                                            <a href="/gudang/edit/<%= item.id_gudang %>" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="/gudang/delete/<%= item.id_gudang %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                                            <a href="/satuan/edit/<%= item.id_satuan %>" class="text-success"><i class="fa-solid fa-pencil"></i></a>
+                                                            <a href="/satuan/delete/<%= item.id_satuan %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -118,46 +111,9 @@
                                     <div class="row mb-2">
                                         <div class="col-sm-4">
                                             <div class="text-sm-left">
-                                                <a href="/gudang/add" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="fa-solid fa-plus"></i> Tambah Gudang </a>
+                                                <a href="/satuan/add" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="fa-solid fa-plus"></i> Tambah Satuan </a>
                                             </div>
                                         </div>
-                                        <div class="col-sm-8">
-                                            <ul class="pagination pagination-rounded justify-content-end mb-2">
-                                                
-                                                <li class="page-item">
-                                                    <%if (page !=1 ) { %>
-                                                        <a class="page-link"
-                                                            href="<%=url.replace(`page=${page}`,`page=${parseInt(page)-1}`)%>"><i class="fa-solid fa-angle-left"></i></a>
-                                                        <% } %>
-                                                </li>
-
-                                                <% for (let i = 1; i <=pages; i++) { %>
-                                                <li class="page-item <%= i == page ? 'active' : '' %>" aria-current="page">
-                                                    <a class="page-link" href="<%=url.replace(`page=${page}`,`gudang?page=${i}`) %>">
-                                                        <!-- `/gudang?page=${page}${filter}` -->
-                                                        <%= i %>
-                                                    </a>
-                                                </li>
-                                                <% } %>
-
-                                                
-                                                <!-- <% for (let i=1; i <=pages; i++) { %> 
-                                                    <li class="page-item<%= i == page ? ' active' : '' %>"><a class="page-link" href="<%= url.includes(`&page=${page}`) ? url.replace(`&page=${page}`, `&page=${i}`) : `/gudang?page=${i}` %>"
-                                                     ><%= i %>
-                                                    </a>
-                                                </li>
-                                                     <% } %> -->
-
-                                                <li class="page-item">
-                                                    <%if (page <=pages && page !=pages) { %>
-                                                        <a class="page-link"
-                                                            href="<%=url.replace(`page=${page}`,`page=${parseInt(page)+1}`)%>"><i class="fa-solid fa-angle-right"></i></a>
-                                                        <% } %>
-                                                </li>
-                                            </ul>
-
-                                            
-                                        </div><!-- end col-->
                                     </div>
 
                                 </div>

@@ -122,12 +122,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Tambah Gudang</h4>
+                            <h4 class="mb-sm-0 font-size-18">Edit Satuan</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Gudang</a></li>
-                                    <li class="breadcrumb-item active">Tambah Gudang</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Satuan</a></li>
+                                    <li class="breadcrumb-item active">Edit Satuan</li>
                                 </ol>
                             </div>
 
@@ -144,32 +144,38 @@
                                 <form action="" method="post" id="form-user">
 
                                     <div class="row mb-3">
-                                        <label for="nama_gudang" class="col-sm-2 col-form-label">Nama Gudang</label>
+                                        <label for="id_satuan" class="col-sm-2 col-form-label">ID Satuan</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="nama_gudang"
-                                                name='nama_gudang' required>
+                                            <input type="text" class="form-control" id="id_satuan" value="<%=item.id_satuan%>"
+                                                name='id_satuan' disabled>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="alamat_gudang" class="col-sm-2 col-form-label">Alamat Gudang</label>
+                                        <label for="nama_satuan" class="col-sm-2 col-form-label">Nama Satuan</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="nama_satuan" value="<%=item.nama_satuan%>"
+                                                name='nama_satuan' required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="keterangan_satuan" class="col-sm-2 col-form-label">Kketerangan satuan</label>
                                         <p class="card-title-desc">Contoh : <br> Jl. H. Mahdi II No.89, Cisaranten
                                             Wetan, Kec. Cinambo, ota Bandung, Jawa Barat, 40293
                                         <div>
-                                            <input type="text" class="form-control" id="alamat_gudang"
-                                            name='alamat_gudang' required>
+                                            <input type="text" class="form-control" id="keterangan_satuan" value="<%=item.keterangan_satuan%>"
+                                            name='keterangan_satuan' required>
                                         </div>
                                     </div>
 
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Save</button>
 
-                                        <a href="/gudang" class="btn btn-warning">Cancel</a>
+                                        <a href="/satuan" class="btn btn-warning">Cancel</a>
                                     </div>
 
                                 </form>
-
-                         
 
                             </div>
                         </div>

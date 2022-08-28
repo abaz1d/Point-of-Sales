@@ -122,12 +122,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Tambah Gudang</h4>
+                            <h4 class="mb-sm-0 font-size-18">Tambah Supplier</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Gudang</a></li>
-                                    <li class="breadcrumb-item active">Tambah Gudang</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Supplier</a></li>
+                                    <li class="breadcrumb-item active">Tambah Supplier</li>
                                 </ol>
                             </div>
 
@@ -144,27 +144,49 @@
                                 <form action="" method="post" id="form-user">
 
                                     <div class="row mb-3">
-                                        <label for="nama_gudang" class="col-sm-2 col-form-label">Nama Gudang</label>
+                                        <label for="nama_supplier"
+                                            class="col-sm-2 col-form-label">Nama Supplier</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="nama_gudang"
-                                                name='nama_gudang' required>
+                                            <input type="text" class="form-control" id="nama_supplier"
+                                                name="nama_supplier" placeholder="Tulis Nama"
+                                                >
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-3">
+                                        <label for="alamat_supplier"
+                                            class="col-sm-2 col-form-label">Alamat Supplier</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="alamat_supplier"
+                                                name="alamat_supplier" placeholder="Tulis Alamat"
+                                                >
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="alamat_gudang" class="col-sm-2 col-form-label">Alamat Gudang</label>
-                                        <p class="card-title-desc">Contoh : <br> Jl. H. Mahdi II No.89, Cisaranten
-                                            Wetan, Kec. Cinambo, ota Bandung, Jawa Barat, 40293
-                                        <div>
-                                            <input type="text" class="form-control" id="alamat_gudang"
-                                            name='alamat_gudang' required>
+                                        <label for="telepon_supplier"
+                                            class="col-sm-2 col-form-label">Telepon Supplier</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="telepon_supplier"
+                                                name="telepon_supplier" placeholder="Tulis Telepon"
+                                                >
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="email_supplier"
+                                            class="col-sm-2 col-form-label">Email Supplier</label>
+                                        <div class="col-sm-10">
+                                            <input type="email" class="form-control" id="email_supplier"
+                                                name="email_supplier" placeholder="Tulis Email"
+                                                >
                                         </div>
                                     </div>
 
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Save</button>
 
-                                        <a href="/gudang" class="btn btn-warning">Cancel</a>
+                                        <a href="/supplier" class="btn btn-warning">Cancel</a>
                                     </div>
 
                                 </form>
