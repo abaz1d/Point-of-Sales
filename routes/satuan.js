@@ -62,6 +62,7 @@ module.exports = function (db) {
     try {
       const { rows } = await db.query('SELECT * FROM satuan WHERE id_satuan = $1', [req.params.id])
       res.render('satuan/edit', { item: rows[0] });
+      console.log('satuan', rows)
     } catch (e) {
       res.send(e)
     }

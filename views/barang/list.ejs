@@ -56,9 +56,58 @@
 
 
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Cari</button>
+                                            
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="text-sm-left">
+                                                        <button type="submit" class="btn btn-primary">Cari</button>
+                                                        <a href="/barang" class="btn btn-warning">Reset</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <ul class="pagination pagination-rounded justify-content-end">
+                                                        <button type="button"
+                                                        class="btn btn-success btn-rounded waves-effect waves-light"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target=".bs-example-modal-center"><i
+                                                                class="fa-solid fa-plus"></i> Tambah</button>
 
-                                            <a href="/barang" class="btn btn-warning">Reset</a>
+                                                        <div class="modal fade bs-example-modal-center" tabindex="-1"
+                                                            role="dialog" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Tambah Barang/ Varian
+                                                                            Barang</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Klik salah satu tombol di bawah ini untuk
+                                                                            menambahkan Barang/ Varian Barang</p>
+                                                                    </div>
+                                                                    <div class="modal-footer"
+                                                                        style="text-align: center;">
+                                                                        <div class="col-12">
+                                                                            <a style="margin: 5px;"
+                                                                                href="/barang/addbarang"
+                                                                                class="btn btn-info"><i
+                                                                                    class="fa-solid fa-plus"></i> Tambah
+                                                                                Barang </a>
+                                                                            <a style="margin: 5px;"
+                                                                                href="/barang/addvarian"
+                                                                                class="btn btn-warning"><i
+                                                                                    class="fa-solid fa-plus"></i> Tambah
+                                                                                Varian </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div><!-- /.modal -->
+                                                    </ul>
+                                                </div><!-- end col-->
+                                            </div>
                                         </div>
 
                                     </form>
@@ -72,7 +121,7 @@
 
                                 <div class="panel-body">
                                     <h4 class="card-title mb-5">Tabel Data barang</h4>
-                                    <table class="table table-condensed table-striped">
+                                    <table class="table table-condensed table-bordered table-striped">
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="align-middle">ID Barang</th>
@@ -95,10 +144,10 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex gap-3">
-                                                            <a href="/barang/edit/<%= item.id_barang %>"
+                                                            <a href="/barang/editbar/<%= item.id_barang %>"
                                                                 class="text-success"><i
                                                                     class="fa-solid fa-pencil"></i></a>
-                                                            <a href="/barang/delete/<%= item.id_barang %>"
+                                                            <a href="/barang/deletebar/<%= item.id_barang %>"
                                                                 class="text-danger"><i
                                                                     class="fa-solid fa-trash"></i></a>
                                                         </div>
@@ -109,31 +158,20 @@
                                         </tbody>
                                     </table>
                                 </div>
-
-                                <div class="row mb-2">
-                                    <div class="col-sm-6">
-                                        <div class="text-sm-left">
-                                            <a href="/barang/addbarang"
-                                                class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i
-                                                    class="fa-solid fa-plus"></i> Tambah Barang </a>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-xl-7">
+                    <div class="col-xl-8">
 
 
                         <div class="card">
                             <div class="card-body">
-        
+
                                 <div class="table-responsive">
-                                    <h4 class="card-title mb-5">Tabel Detail</h4>
-        
-                                    <table class="table align-middle table-nowrap table-check">
+                                    <h4 class="card-title mb-5">Tabel Varian <a href="#" class="text-danger"><%=query.id_barang%></a></h4>
+
+                                    <table class="table align-middle table-nowrap table-bordered">
                                         <thead class="table-light">
                                             <tr class="info">
                                                 <th>Gambar & ID</th>
@@ -149,30 +187,31 @@
                                         <% varian.forEach((item, index)=> { %>
                                             <tbody>
                                                 <tr>
-                                                    <td>
+                                                    <td style="width:25px; height:25px; text-align: center; padding: auto;">
                                                         <div>
-                                                            <img src="/gambar/<%= item.gambar_varian %>" alt="gambar_tersimpan" style="width: 25%">
-                                                            </div>
+                                                            <img src="/gambar/<%= item.gambar_varian %>"
+                                                                alt="gambar_tersimpan" style="width: 100%">
+                                                        </div>
                                                         <div>
-                                                        <%=item.id_varian%>
+                                                            <%=item.id_varian%>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <%=item.nama_varian%>
                                                     </td>
-        
+
                                                     <td>
                                                         <%=item.stok_varian%>
                                                     </td>
-        
+
                                                     <td>
                                                         <%=item.id_satuan%>
                                                     </td>
-        
+
                                                     <td>
                                                         <%=item.id_gudang%>
                                                     </td>
-        
+
                                                     <td>
                                                         <%=item.harga_beli_varian%>
                                                     </td>
@@ -181,25 +220,18 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex gap-3">
-                                                            <a href="/barang/edit/<%= item.id_barang %>" class="text-success"><i
+                                                            <a href="/barang/editvar/<%= item.id_varian %>"
+                                                                class="text-success"><i
                                                                     class="fa-solid fa-pencil"></i></a>
-                                                            <a href="/barang/delete/<%= item.id_barang %>"
-                                                                class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                                            <a href="/barang/deletevar/<%= item.id_varian %>"
+                                                                class="text-danger"><i
+                                                                    class="fa-solid fa-trash"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                             <% }) %>
                                     </table>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-sm-4">
-                                        <div class="text-sm-left">
-                                            <a href="/barang/addvarian"
-                                                class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i
-                                                    class="fa-solid fa-plus"></i> Tambah Varian Barang </a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -230,9 +262,9 @@
     <script>
 
 
-$(document).ready(function(){
-              $('[data-toggle="popover"]').popover();
-            });
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+        });
     </script>
     <!-- end main content-->
 

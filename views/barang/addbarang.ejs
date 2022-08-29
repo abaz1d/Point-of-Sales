@@ -25,13 +25,6 @@
     <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-
-    <style>
-        .image-upload>input {
-            display: 100%;
-
-        }
-    </style>
 </head>
 
 <body data-sidebar="dark">
@@ -129,12 +122,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Tambah Varian</h4>
+                            <h4 class="mb-sm-0 font-size-18">Tambah Barang</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Varian</a></li>
-                                    <li class="breadcrumb-item active">Tambah Varian</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Barang</a></li>
+                                    <li class="breadcrumb-item active">Tambah Barang</li>
                                 </ol>
                             </div>
 
@@ -148,118 +141,15 @@
                         <div class="card">
                             <div class="card-body">
 
-
-                                <form action="" method="post" encType="multipart/form-data">
+                                <form action="" method="post" id="form-user">
 
                                     <div class="row mb-3">
-                                        <label for="nama_varian" class="col-sm-2 col-form-label">Nama Varian</label>
+                                        <label for="nama" class="col-sm-2 col-form-label">Nama Barang</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="nama_varian" name='nama_varian'
-                                                required>
+                                            <input type="text" class="form-control" id="nama"
+                                                name='nama' required>
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="gudang" class="col-sm-2 col-form-label">Kategori Gudang</label>
-                                        <div class="col-sm-10">
-                                            <select id="gudang" name="gudang" class="form-select" required>
-                                                <option disabled selected>>--Pilih Gudang--<</option>
-                                                        <% gudang.forEach((item)=> { %>
-                                                <option value="<%= item.id_gudang %>">
-                                                    <%= item.id_gudang %> - <%= item.nama_gudang %>
-                                                </option>
-                                                <% }) %>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="kategori_barang" class="col-sm-2 col-form-label">Kategori
-                                            Barang</label>
-                                        <div class="col-sm-10">
-                                            <select id="kategori_barang" name="kategori_barang" class="form-select"
-                                                required>
-                                                <option disabled selected>>--Pilih Barang--<</option>
-                                                        <% barang.forEach((item)=> { %>
-                                                <option value="<%= item.id_barang %>">
-                                                    <%= item.id_barang %> - <%= item.nama_barang %>
-                                                </option>
-                                                <% }) %>
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row mb-3">
-                                        <label for="stok_varian" class="col-sm-2 col-form-label">Stok Varian</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="stok_varian"
-                                                name='stok_varian' required>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="satuan_varian" class="col-sm-2 col-form-label">Satuan
-                                            Varian</label>
-                                        <div class="col-sm-10">
-                                            <select id="satuan_varian" name="satuan_varian" class="form-select"
-                                                required>
-                                                <option disabled selected>>--Pilih Satuan--<</option>
-                                                        <% satuan.forEach((item)=> { %>
-                                                <option value="<%= item.id_satuan %>">
-                                                    <%= item.id_satuan %> - <%= item.nama_satuan %>
-                                                </option>
-                                                <% }) %>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="harga_beli" class="col-sm-2 col-form-label">Harga Beli</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="harga_beli" name='harga_beli'
-                                                required>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="harga_jual" class="col-sm-2 col-form-label">Harga Jual</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="harga_jual" name="harga_jual"
-                                                required>
-                                        </div>
-                                    </div>
-                                    <!-- 
-                                    <div class="row mb-3">
-                                        <label for="gambar" class="col-sm-2 col-form-label">Gambar Varian</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" name="gambar" id="gambar" class="form-control"
-                                                name="gambar">
-                                        </div>
-                                    </div> -->
-
-
-                                    <div class="row mb-3">
-                                        <label for="gambar" class="col-sm-2 col-form-label">Gambar Varian</label>
-                                        <div class="col-sm-10">
-                                            <div class="dropzone">
-                                                <div class="image-upload">
-                                                    <input type="file" name="gambar" id="gambar" class="form-control"
-                                                        name="gambar" required />
-
-                                                    <label class="col-sm-12 " for="gambar"
-                                                        style="text-align: center; padding: 15px;">
-                                                        <h2 for="gambar" class="col-form-label">Gambar Varian</h2>
-                                                        <i class="fa-solid fa-cloud-arrow-up fa-6x"></i>
-                                                        <h2>Click to upload.</h2>
-
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
 
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Save</button>
@@ -269,7 +159,7 @@
 
                                 </form>
 
-
+                         
 
                             </div>
                         </div>
@@ -294,10 +184,6 @@
     <script src="assets/libs/metismenu/metisMenu.min.js"></script>
     <script src="assets/libs/simplebar/simplebar.min.js"></script>
     <script src="assets/libs/node-waves/waves.min.js"></script>
-    <script>
-        $('.file-upload').file_upload();
-    </script>
-
 
     <!-- select 2 plugin -->
     <script src="https://themesbrand.com/skote/layouts/assets/libs/select2/js/select2.min.js"></script>

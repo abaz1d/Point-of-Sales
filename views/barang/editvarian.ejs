@@ -152,9 +152,17 @@
                                 <form action="" method="post" encType="multipart/form-data">
 
                                     <div class="row mb-3">
+                                        <label for="id_varian" class="col-sm-2 col-form-label">ID Varian</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="id_varian" name='id_varian' value="<%=item.id_varian%>"
+                                                disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
                                         <label for="nama_varian" class="col-sm-2 col-form-label">Nama Varian</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="nama_varian" name='nama_varian'
+                                            <input type="text" class="form-control" id="nama_varian" name='nama_varian' value="<%=item.nama_varian%>"
                                                 required>
                                         </div>
                                     </div>
@@ -164,9 +172,9 @@
                                         <div class="col-sm-10">
                                             <select id="gudang" name="gudang" class="form-select" required>
                                                 <option disabled selected>>--Pilih Gudang--<</option>
-                                                        <% gudang.forEach((item)=> { %>
-                                                <option value="<%= item.id_gudang %>">
-                                                    <%= item.id_gudang %> - <%= item.nama_gudang %>
+                                                        <% gudang.forEach((isi)=> { %>
+                                                            <option value="<%= isi.id_gudang %>" <%= item.id_gudang == isi.id_gudang ? 'selected' : '' %>>
+                                                    <%= isi.id_gudang %> - <%= isi.nama_gudang %>
                                                 </option>
                                                 <% }) %>
                                             </select>
@@ -180,9 +188,9 @@
                                             <select id="kategori_barang" name="kategori_barang" class="form-select"
                                                 required>
                                                 <option disabled selected>>--Pilih Barang--<</option>
-                                                        <% barang.forEach((item)=> { %>
-                                                <option value="<%= item.id_barang %>">
-                                                    <%= item.id_barang %> - <%= item.nama_barang %>
+                                                        <% barang.forEach((isi)=> { %>
+                                                            <option value="<%= isi.id_barang %>" <%= item.id_barang == isi.id_barang ? 'selected' : '' %> >
+                                                    <%= isi.id_barang %> - <%= isi.nama_barang %>
                                                 </option>
                                                 <% }) %>
                                             </select>
@@ -193,7 +201,7 @@
                                     <div class="row mb-3">
                                         <label for="stok_varian" class="col-sm-2 col-form-label">Stok Varian</label>
                                         <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="stok_varian"
+                                            <input type="number" class="form-control" id="stok_varian" value="<%=item.stok_varian%>"
                                                 name='stok_varian' required>
                                         </div>
                                     </div>
@@ -205,9 +213,9 @@
                                             <select id="satuan_varian" name="satuan_varian" class="form-select"
                                                 required>
                                                 <option disabled selected>>--Pilih Satuan--<</option>
-                                                        <% satuan.forEach((item)=> { %>
-                                                <option value="<%= item.id_satuan %>">
-                                                    <%= item.id_satuan %> - <%= item.nama_satuan %>
+                                                        <% satuan.forEach((isi)=> { %>
+                                                            <option value="<%= isi.id_satuan %>" <%= item.id_satuan == isi.id_satuan ? 'selected' : '' %>>
+                                                    <%= isi.id_satuan %> - <%= isi.nama_satuan %>
                                                 </option>
                                                 <% }) %>
                                             </select>
@@ -217,7 +225,7 @@
                                     <div class="row mb-3">
                                         <label for="harga_beli" class="col-sm-2 col-form-label">Harga Beli</label>
                                         <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="harga_beli" name='harga_beli'
+                                            <input type="number" class="form-control" id="harga_beli" name='harga_beli' value="<%=item.harga_beli_varian%>"
                                                 required>
                                         </div>
                                     </div>
@@ -225,7 +233,7 @@
                                     <div class="row mb-3">
                                         <label for="harga_jual" class="col-sm-2 col-form-label">Harga Jual</label>
                                         <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="harga_jual" name="harga_jual"
+                                            <input type="number" class="form-control" id="harga_jual" name="harga_jual" value="<%=item.harga_jual_varian%>"
                                                 required>
                                         </div>
                                     </div>
@@ -245,13 +253,15 @@
                                             <div class="dropzone">
                                                 <div class="image-upload">
                                                     <input type="file" name="gambar" id="gambar" class="form-control"
-                                                        name="gambar" required />
+                                                        name="gambar" />
 
+                                                        <input type="hidden" name="saved_gambar" id="saved_gambar" value="<%= item.gambar_varian %>">
+                                                        
                                                     <label class="col-sm-12 " for="gambar"
                                                         style="text-align: center; padding: 15px;">
                                                         <h2 for="gambar" class="col-form-label">Gambar Varian</h2>
-                                                        <i class="fa-solid fa-cloud-arrow-up fa-6x"></i>
-                                                        <h2>Click to upload.</h2>
+                                                        <img src="/gambar/<%= item.gambar_varian %>" alt="gambar_tersimpan" style="width: 25%">
+                                                        <h2>Click to Change.</h2>
 
                                                     </label>
                                                 </div>
