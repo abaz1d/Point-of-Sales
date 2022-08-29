@@ -115,7 +115,8 @@ module.exports = function (db) {
         db.query(sql, search, (err, barang) => {
             if (err) console.log(err)
             console.log('sql', sql)
-            const id_barang = req.query.id_barang ? req.query.id_barang : barang.rows.length > 0 ? barang.rows[0].id_barang : '';
+            //const id_barang = req.query.id_barang ? req.query.id_barang : barang.rows.length > 0 ? barang.rows[0].id_barang : '';
+            const id_barang = req.query.id_barang ? req.query.id_barang : '';
 
             db.query('SELECT dp.*, b.nama_barang FROM varian as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.id_barang = $1 ORDER BY dp.id_varian ASC', [id_barang], (err, varian) => {
                 if (err) console.log(err)

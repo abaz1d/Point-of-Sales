@@ -99,7 +99,7 @@
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary">Cari</button>
 
-                                                <a href="/jquery.html" class="btn btn-warning">Reset</a>
+                                                <a href="/utama" class="btn btn-warning">Reset</a>
                                             </div>
 
                                         </form>
@@ -179,32 +179,65 @@
                                     <div class="d-sm-flex flex-wrap">
                                         <h4 class="card-title mb-4">Tabel Hasil Pencarian</h4>
                                         <div class="ms-auto">
-                                            <ul class="nav nav-tabs">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Barang</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Gudang</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Pembelian</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link active" href="#">Penjualan</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Satuan</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Supplier</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Users</a>
-                                                </li>
-                                            </ul>
+                                            <!-- Nav tabs -->
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" data-bs-toggle="tab" href="ui-tabs-accordions.html#barang" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                                                            <span class="d-none d-sm-block">Barang</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#gudang" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                                            <span class="d-none d-sm-block">Gudang</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#pembelian" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                                            <span class="d-none d-sm-block">Pembelian</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#penjualan" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="fas fa-cog"></i></span>
+                                                            <span class="d-none d-sm-block">Penjualan</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#satuan" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                                            <span class="d-none d-sm-block">Satuan</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#supplier" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                                            <span class="d-none d-sm-block">Supplier</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#users" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="fas fa-cog"></i></span>
+                                                            <span class="d-none d-sm-block">Users</span>    
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                         </div>
                                     </div>
-                                    <!--Tempat tabel data -->
+
+                                    <div class="col-xl-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                
+                                                
+                
+                                                <!-- Tab panes -->
+                                                <div class="tab-content p-3 text-muted">
+                                                    <div class="tab-pane active" id="barang" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            <!--Tempat tabel data -->
                                     <div class="table-responsive">
                                         <table class="table align-middle table-nowrap table-check">
                                             <thead class="table-light">
@@ -246,123 +279,6 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check font-size-16">
-                                                            <input class="form-check-input" type="checkbox" id="orderidcheck02">
-                                                            <label class="form-check-label" for="orderidcheck02"></label>
-                                                        </div>
-                                                    </td>
-                                                    <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2541</a> </td>
-                                                    <td>Jamal Burnett</td>
-                                                    <td>
-                                                        07 Oct, 2019
-                                                    </td>
-                                                    <td>
-                                                        $380
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex gap-3">
-                                                            <a href="javascript:void(0);" class="text-primary"><i class="fa-solid fa-print"></i></a>
-                                                            <a href="javascript:void(0);" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="javascript:void(0);" class="text-danger"><i class="fa-solid fa-trash"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check font-size-16">
-                                                            <input class="form-check-input" type="checkbox" id="orderidcheck03">
-                                                            <label class="form-check-label" for="orderidcheck03"></label>
-                                                        </div>
-                                                    </td>
-                                                    <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2542</a> </td>
-                                                    <td>Juan Mitchell</td>
-                                                    <td>
-                                                        06 Oct, 2019
-                                                    </td>
-                                                    <td>
-                                                        $384
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex gap-3">
-                                                            <a href="javascript:void(0);" class="text-primary"><i class="fa-solid fa-print"></i></a>
-                                                            <a href="javascript:void(0);" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="javascript:void(0);" class="text-danger"><i class="fa-solid fa-trash"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check font-size-16">
-                                                            <input class="form-check-input" type="checkbox" id="orderidcheck04">
-                                                            <label class="form-check-label" for="orderidcheck04"></label>
-                                                        </div>
-                                                    </td>
-                                                    <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2543</a> </td>
-                                                    <td>Barry Dick</td>
-                                                    <td>
-                                                        05 Oct, 2019
-                                                    </td>
-                                                    <td>
-                                                        $412
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex gap-3">
-                                                            <a href="javascript:void(0);" class="text-primary"><i class="fa-solid fa-print"></i></a>
-                                                            <a href="javascript:void(0);" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="javascript:void(0);" class="text-danger"><i class="fa-solid fa-trash"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check font-size-16">
-                                                            <input class="form-check-input" type="checkbox" id="orderidcheck05">
-                                                            <label class="form-check-label" for="orderidcheck05"></label>
-                                                        </div>
-                                                    </td>
-                                                    <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2544</a> </td>
-                                                    <td>Ronald Taylor</td>
-                                                    <td>
-                                                        04 Oct, 2019
-                                                    </td>
-                                                    <td>
-                                                        $404
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex gap-3">
-                                                            <a href="javascript:void(0);" class="text-primary"><i class="fa-solid fa-print"></i></a>
-                                                            <a href="javascript:void(0);" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="javascript:void(0);" class="text-danger"><i class="fa-solid fa-trash"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check font-size-16">
-                                                            <input class="form-check-input" type="checkbox" id="orderidcheck06">
-                                                            <label class="form-check-label" for="orderidcheck06"></label>
-                                                        </div>
-                                                    </td>
-                                                    <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2545</a> </td>
-                                                    <td>Jacob Hunter</td>
-                                                    <td>
-                                                        04 Oct, 2019
-                                                    </td>
-                                                    <td>
-                                                        $392
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex gap-3">
-                                                            <a href="javascript:void(0);" class="text-primary"><i class="fa-solid fa-print"></i></a>
-                                                            <a href="javascript:void(0);" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="javascript:void(0);" class="text-danger"><i class="fa-solid fa-trash"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -393,6 +309,78 @@
                                             </ul>
                                         </div><!-- end col-->
                                     </div>
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="gudang" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                                                            single-origin coffee squid. Exercitation +1 labore velit, blog
+                                                            sartorial PBR leggings next level wes anderson artisan four loko
+                                                            farm-to-table craft beer twee. Qui photo booth letterpress,
+                                                            commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
+                                                            vinyl cillum PBR. Homo nostrud organic, assumenda labore
+                                                            aesthetic magna delectus.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="pembelian" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Etsy mixtape wayfarers, ethical wes anderson tofu before they
+                                                            sold out mcsweeney's organic lomo retro fanny pack lo-fi
+                                                            farm-to-table readymade. Messenger bag gentrify pitchfork
+                                                            tattooed craft beer, iphone skateboard locavore carles etsy
+                                                            salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
+                                                            Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
+                                                            mi whatever gluten yr.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="penjualan" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
+                                                            art party before they sold out master cleanse gluten-free squid
+                                                            scenester freegan cosby sweater. Fanny pack portland seitan DIY,
+                                                            art party locavore wolf cliche high life echo park Austin. Cred
+                                                            vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
+                                                            farm-to-table VHS.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="satuan" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                                                            single-origin coffee squid. Exercitation +1 labore velit, blog
+                                                            sartorial PBR leggings next level wes anderson artisan four loko
+                                                            farm-to-table craft beer twee. Qui photo booth letterpress,
+                                                            commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
+                                                            vinyl cillum PBR. Homo nostrud organic, assumenda labore
+                                                            aesthetic magna delectus.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="supplier" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Etsy mixtape wayfarers, ethical wes anderson tofu before they
+                                                            sold out mcsweeney's organic lomo retro fanny pack lo-fi
+                                                            farm-to-table readymade. Messenger bag gentrify pitchfork
+                                                            tattooed craft beer, iphone skateboard locavore carles etsy
+                                                            salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
+                                                            Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
+                                                            mi whatever gluten yr.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="users" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
+                                                            art party before they sold out master cleanse gluten-free squid
+                                                            scenester freegan cosby sweater. Fanny pack portland seitan DIY,
+                                                            art party locavore wolf cliche high life echo park Austin. Cred
+                                                            vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
+                                                            farm-to-table VHS.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
 
                                 </div>
                             </div>
