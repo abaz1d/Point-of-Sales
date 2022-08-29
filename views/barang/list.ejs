@@ -1,279 +1,239 @@
 <%- include('../partials/header') %>
 
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
-        
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
 
-        <div class="main-content">
 
-            <div class="page-content">
-                <div class="container-fluid">
+    <div class="main-content">
 
-                    <!-- start page title -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0 font-size-18">Barang</h4>
+        <div class="page-content">
+            <div class="container-fluid">
 
-                                <div class="page-title-right">
-                                    <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Barang</a></li>
-                                        <li class="breadcrumb-item active">List</li>
-                                    </ol>
-                                </div>
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0 font-size-18">Barang</h4>
 
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Barang</a></li>
+                                    <li class="breadcrumb-item active">List</li>
+                                </ol>
                             </div>
+
                         </div>
                     </div>
-                    <!-- end page title -->
+                </div>
+                <!-- end page title -->
 
-                    <div class="row">
-                        <div class="col-xl-4">
-                            <!-- ==================Searching = -->
+                <div class="row">
+                    <div class="col-xl-4">
+                        <!-- ==================Searching = -->
 
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title mb-4">Pencarian Data</h4>
-                                    <div class="row">
-                                        <form id="form-search">
-                                            <input type="hidden" name="page" value="1">
-                                            <div class="row mb-3">
-                                                <label for="cari_id"
-                                                    class="col-sm-4 col-form-label">ID barang</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="cari_id"
-                                                        name="cari_id" placeholder="Tulis ID barang"
-                                                        value="<%=query.cari_id%>">
-                                                </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Pencarian Data</h4>
+                                <div class="row">
+                                    <form id="form-search">
+                                        <input type="hidden" name="page" value="1">
+                                        <div class="row mb-3">
+                                            <label for="cari_id" class="col-sm-4 col-form-label">ID barang</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="cari_id" name="cari_id"
+                                                    placeholder="Tulis ID barang" value="<%=query.cari_id%>">
                                             </div>
+                                        </div>
 
-                                            <div class="row mb-3">
-                                                <label for="cari_nama"
-                                                    class="col-sm-4 col-form-label">Nama barang</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="cari_nama"
-                                                        name="cari_nama" placeholder="Tulis Nama barang" 
-                                                        value="<%=query.cari_nama%>">
-                                                </div>
+                                        <div class="row mb-3">
+                                            <label for="cari_nama" class="col-sm-4 col-form-label">Nama barang</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="cari_nama" name="cari_nama"
+                                                    placeholder="Tulis Nama barang" value="<%=query.cari_nama%>">
                                             </div>
-                                           
+                                        </div>
 
-                                            <div class="card-footer">
-                                                <button type="submit" class="btn btn-primary">Cari</button>
 
-                                                <a href="/barang" class="btn btn-warning">Reset</a>
-                                            </div>
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary">Cari</button>
 
-                                        </form>
-                                    </div>
+                                            <a href="/barang" class="btn btn-warning">Reset</a>
+                                        </div>
 
+                                    </form>
                                 </div>
+
                             </div>
                         </div>
 
-                        <div class="col-xl-8">
+                        <div class="card">
+                            <div class="card-body">
 
-                            <div class="card">
-                                <div class="card-body">
+                                <div class="panel-body">
+                                    <h4 class="card-title mb-5">Tabel Data barang</h4>
+                                    <table class="table table-condensed table-striped">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="align-middle">ID Barang</th>
+                                                <th class="align-middle">Nama Barang</th>
+                                                <th class="align-middle">Actions</th>
+                                            </tr>
+                                        </thead>
 
-                                    <h4 class="card-title mb-4">Tabel Data barang</h4>
-                                    <div class="panel-body">
-                                        <table class="table table-condensed table-striped">
-                                            <thead class="table-light">
+                                        <tbody>
+                                            <% rows.forEach((item, index)=> { %>
                                                 <tr>
-                                                    <th class="align-middle">ID Barang</th>
-                                                    <th class="align-middle">Nama Barang</th>
-                                                    <th class="align-middle">Actions</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <% rows.forEach((item, index)=> { %>
-                                                <tr data-bs-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                                     <td>
-                                                        <%=item.id_barang%>
+                                                        <a href="/barang?id_barang=<%= item.id_barang %>">
+                                                            <%=item.id_barang%>
+                                                        </a>
+
                                                     </td>
                                                     <td>
                                                         <%=item.nama_barang%>
-                                                         <a href="#" title="<%=item.keterangan_barang%>" data-toggle="popover" data-trigger="focus"><i class="fa-solid fa-circle-info"></i></a>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex gap-3">
-                                                            <a href="/barang/edit/<%= item.id_barang %>" class="text-success"><i class="fa-solid fa-pencil"></i></a>
-                                                            <a href="/barang/delete/<%= item.id_barang %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                                            <a href="/barang/edit/<%= item.id_barang %>"
+                                                                class="text-success"><i
+                                                                    class="fa-solid fa-pencil"></i></a>
+                                                            <a href="/barang/delete/<%= item.id_barang %>"
+                                                                class="text-danger"><i
+                                                                    class="fa-solid fa-trash"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                               
-                                                <tr>
 
-                                                    <td>
-                                                        <div class="collapse" id="collapseExample">
-                                                            <table class="table table-striped">
-                                                                <thead>
-                                                                    <tr class="info">
-                                                                        <th>Job</th>
-                                                                        <th>Company</th>
-                                                                        <th>Salary</th>
-                                                                        <th>Date On</th>
-                                                                        <th>Date off</th>
-                                                                        <th>Action</th>
-                                                                    </tr>
-                                                                </thead>
-                        
-                                                                <tbody>
-                        
-                                                                    <tr data-toggle="collapse" class="accordion-toggle" data-target="#demo10">
-                                                                        <td> <a href="#">Enginner Software</a></td>
-                                                                        <td>Google</td>
-                                                                        <td>U$8.00000 </td>
-                                                                        <td> 2016/09/27</td>
-                                                                        <td> 2017/09/27</td>
-                                                                        <td>
-                                                                            <a href="#" class="btn btn-default btn-sm">
-                                                                                <i class="glyphicon glyphicon-cog"></i>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                        
-                                                                    <tr>
-                                                                        <td colspan="12" class="hiddenRow">
-                                                                            <div class="accordian-body collapse" id="demo10">
-                                                                                <table class="table table-striped">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <td><a href="#"> XPTO 1</a></td>
-                                                                                            <td>XPTO 2</td>
-                                                                                            <td>Obs</td>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <th>item 1</th>
-                                                                                            <th>item 2</th>
-                                                                                            <th>item 3 </th>
-                                                                                            <th>item 4</th>
-                                                                                            <th>item 5</th>
-                                                                                            <th>Actions</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td>item 1</td>
-                                                                                            <td>item 2</td>
-                                                                                            <td>item 3</td>
-                                                                                            <td>item 4</td>
-                                                                                            <td>item 5</td>
-                                                                                            <td>
-                                                                                                <a href="#" class="btn btn-default btn-sm">
-                                                                                                    <i class="glyphicon glyphicon-cog"></i>
-                                                                                                </a>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                        
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                        
-                                                                    <tr>
-                                                                        <td>Scrum Master</td>
-                                                                        <td>Google</td>
-                                                                        <td>U$8.00000 </td>
-                                                                        <td> 2016/09/27</td>
-                                                                        <td> 2017/09/27</td>
-                                                                        <td> <a href="#" class="btn btn-default btn-sm">
-                                                                                <i class="glyphicon glyphicon-cog"></i>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                        
-                        
-                                                                    <tr>
-                                                                        <td>Back-end</td>
-                                                                        <td>Google</td>
-                                                                        <td>U$8.00000 </td>
-                                                                        <td> 2016/09/27</td>
-                                                                        <td> 2017/09/27</td>
-                                                                        <td> <a href="#" class="btn btn-default btn-sm">
-                                                                                <i class="glyphicon glyphicon-cog"></i>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                        
-                        
-                                                                    <tr>
-                                                                        <td>Front-end</td>
-                                                                        <td>Google</td>
-                                                                        <td>U$8.00000 </td>
-                                                                        <td> 2016/09/27</td>
-                                                                        <td> 2017/09/27</td>
-                                                                        <td> <a href="#" class="btn btn-default btn-sm">
-                                                                                <i class="glyphicon glyphicon-cog"></i>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                        
-                        
-                                                                </tbody>
-                                                            </table>
-                        
-                                                        </div>
-                                                    </td>
-
-                                                </tr>
                                                 <% }) %>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                    <div class="row mb-2">
-                                        <div class="col-sm-4">
-                                            <div class="text-sm-left">
-                                                <a href="/barang/add" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="fa-solid fa-plus"></i> Tambah barang </a>
-                                            </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-6">
+                                        <div class="text-sm-left">
+                                            <a href="/barang/addbarang"
+                                                class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i
+                                                    class="fa-solid fa-plus"></i> Tambah Barang </a>
                                         </div>
                                     </div>
+                                </div>
 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-7">
+
+
+                        <div class="card">
+                            <div class="card-body">
+        
+                                <div class="table-responsive">
+                                    <h4 class="card-title mb-5">Tabel Detail</h4>
+        
+                                    <table class="table align-middle table-nowrap table-check">
+                                        <thead class="table-light">
+                                            <tr class="info">
+                                                <th>Gambar & ID</th>
+                                                <th>Nama Varian</th>
+                                                <th>Stok Varian</th>
+                                                <th>Satuan</th>
+                                                <th>Gudang</th>
+                                                <th>Harga Beli</th>
+                                                <th>Harga Jual</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <% varian.forEach((item, index)=> { %>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div>
+                                                            <img src="/gambar/<%= item.gambar_varian %>" alt="gambar_tersimpan" style="width: 25%">
+                                                            </div>
+                                                        <div>
+                                                        <%=item.id_varian%>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <%=item.nama_varian%>
+                                                    </td>
+        
+                                                    <td>
+                                                        <%=item.stok_varian%>
+                                                    </td>
+        
+                                                    <td>
+                                                        <%=item.id_satuan%>
+                                                    </td>
+        
+                                                    <td>
+                                                        <%=item.id_gudang%>
+                                                    </td>
+        
+                                                    <td>
+                                                        <%=item.harga_beli_varian%>
+                                                    </td>
+                                                    <td>
+                                                        <%=item.harga_jual_varian%>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex gap-3">
+                                                            <a href="/barang/edit/<%= item.id_barang %>" class="text-success"><i
+                                                                    class="fa-solid fa-pencil"></i></a>
+                                                            <a href="/barang/delete/<%= item.id_barang %>"
+                                                                class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <% }) %>
+                                    </table>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4">
+                                        <div class="text-sm-left">
+                                            <a href="/barang/addvarian"
+                                                class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i
+                                                    class="fa-solid fa-plus"></i> Tambah Varian Barang </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- end row -->
                 </div>
-                <!-- container-fluid -->
-            </div>
-            <!-- End Page-content -->
 
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <script>document.write(new Date().getFullYear())</script> © Skote.
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="text-sm-end d-none d-sm-block">
-                                Design & Develop by Themesbrand
-                            </div>
+                <!-- end row -->
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © Skote.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Design & Develop by Themesbrand
                         </div>
                     </div>
                 </div>
-            </footer>
-        </div>
-        <script>
-            $(document).ready(function(){
+            </div>
+        </footer>
+    </div>
+    <script>
+
+
+$(document).ready(function(){
               $('[data-toggle="popover"]').popover();
             });
+    </script>
+    <!-- end main content-->
 
-            
-        </script>
-
-<style>
-
-	.hiddenRow {
-		padding: 0 !important;
-	}
-</style>
-        <!-- end main content-->
-
-        <%- include('../partials/footer') %>
+    <%- include('../partials/footer') %>
