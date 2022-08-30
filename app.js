@@ -22,6 +22,7 @@ var supplierRouter = require('./routes/supplier')(pool)
 
 var barangRouter = require('./routes/barang')(pool);
 // var penjualanRouter = require('./routes/penjualan');
+// var penmbelianRouter = require('./routes/pembelian');
 var usersRouter = require('./routes/users')(pool);
 
 
@@ -44,6 +45,7 @@ app.use('/satuan', satuanRouter);
 app.use('/supplier', supplierRouter);
 app.use('/barang', barangRouter);
 // app.use('/penjualan', penjualanRouter);
+// app.use('/pembeliant', pembeliantRouter);
 app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
