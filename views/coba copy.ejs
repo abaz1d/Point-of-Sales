@@ -1,0 +1,525 @@
+<%- include('partials/header') %>
+
+
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0 font-size-18">Dashboard</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-xl-4">
+
+                            <div class="card overflow-hidden">
+                                <div class="bg-primary bg-soft">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <div class="text-primary p-3">
+                                                <h5 class="text-primary">Hallo, Users</h5>
+                                                <p>Selamat Datang Kembali</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- ==================Tabel Searching = -->
+                                <div class="card-body pt-2 ">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="avatar-md profile-user-wid mb-6">
+                                                <img src="/assets/images/users/avatar-1.jpg" alt=""
+                                                    class="img-thumbnail rounded-circle">
+                                            </div>
+                                            <h5 class="font-size-15 text-truncate">Henry Price</h5>
+                                            <p class="text-muted mb-0 text-truncate">ADMIN/OPERATOR</p>
+                                        </div>
+
+                                        <div class="col-sm-8">
+                                            <div class="pt-2">
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <h5 class="text-muted mb-0">Jam Kerja</h5>
+                                                        <p class="font-size-15">08:00 - 16:00</p>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <h5 class="text-muted mb-0">Catatan</h5>
+                                                        <p class="font-size-15"> - </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- ==================Searching = -->
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-4">Pencarian Data</h4>
+                                    <div class="row">
+                                        <form id="form-search">
+
+                                            <div class="row mb-3">
+                                                <label for="searchString"
+                                                    class="col-sm-2 col-form-label">Invoice</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="searchString"
+                                                        name="searchString" placeholder="Tulis Invoice">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="searchDate" class="col-sm-2 col-form-label" id="searchDate"
+                                                    name="searchDate" for="searchDate">Date</label>
+                                                <div class="col-sm-4">
+                                                    <input type="date" id="searchStartDate" name="searchStartDate"
+                                                        class="form-control" placeholder="Tulis Date">
+                                                    <label class="col-sm-4 col-form-label">to</label>
+                                                    <input type="date" id="searchEndDate" name="searchEndDate"
+                                                        class="form-control" placeholder="Tulis Date">
+                                                </div>
+                                            </div>
+
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary">Cari</button>
+
+                                                <a href="/utama" class="btn btn-warning">Reset</a>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-8">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card mini-stats-wid">
+                                        <div class="card-body">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <p class="text-muted fw-medium">Uang Keluar</p>
+                                                    <h4 class="mb-0">1,235</h4>
+                                                </div>
+
+                                                <div class="flex-shrink-0 align-self-center">
+                                                    <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                                        <span class="avatar-title">
+                                                            <i class="fa-solid fa-arrow-up-long font-size-24"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mini-stats-wid">
+                                        <div class="card-body">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <p class="text-muted fw-medium">Uang Masuk</p>
+                                                    <h4 class="mb-0">$35, 723</h4>
+                                                </div>
+
+                                                <div class="flex-shrink-0 align-self-center ">
+                                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
+                                                        <span class="avatar-title rounded-circle bg-primary">
+                                                            <i class="fa-solid fa-arrow-down-long font-size-24"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mini-stats-wid">
+                                        <div class="card-body">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <p class="text-muted fw-medium">Profit</p>
+                                                    <h4 class="mb-0">$16.2</h4>
+                                                </div>
+
+                                                <div class="flex-shrink-0 align-self-center">
+                                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
+                                                        <span class="avatar-title rounded-circle bg-primary">
+                                                            <i class="fa-solid fa-plus font-size-24"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end row -->
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-sm-flex flex-wrap">
+                                        <h4 class="card-title mb-4">Tabel Hasil Pencarian</h4>
+                                        <div class="ms-auto">
+                                            <!-- Nav tabs -->
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" data-bs-toggle="tab" href="ui-tabs-accordions.html#barang" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                                                            <span class="d-none d-sm-block">Barang</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#gudang" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                                            <span class="d-none d-sm-block">Gudang</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#pembelian" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                                            <span class="d-none d-sm-block">Pembelian</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#penjualan" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="fas fa-cog"></i></span>
+                                                            <span class="d-none d-sm-block">Penjualan</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#satuan" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                                            <span class="d-none d-sm-block">Satuan</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#supplier" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
+                                                            <span class="d-none d-sm-block">Supplier</span>    
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="ui-tabs-accordions.html#users" role="tab">
+                                                            <span class="d-block d-sm-none"><i class="fas fa-cog"></i></span>
+                                                            <span class="d-none d-sm-block">Users</span>    
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                
+                                                
+                
+                                                <!-- Tab panes -->
+                                                <div class="tab-content p-3 text-muted">
+                                                    <div class="tab-pane active" id="barang" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            <div class="row">
+                                                                <div class="col-xl-4">
+                                                    
+                                                                    <!-- ==================Searching = -->
+                                                    
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <h4 class="card-title mb-4">Pencarian Data</h4>
+                                                                            <div class="row">
+                                                                                <form id="form-search">
+                                                    
+                                                                                    <div class="row mb-3">
+                                                                                        <label for="searchString" class="col-sm-2 col-form-label">Invoice</label>
+                                                                                        <div class="col-sm-10">
+                                                                                            <input type="text" class="form-control" id="searchString" name="searchString"
+                                                                                                placeholder="Tulis Invoice">
+                                                                                        </div>
+                                                                                    </div>
+                                                    
+                                                                                    <div class="row mb-3">
+                                                                                        <label for="searchDate" class="col-sm-2 col-form-label" id="searchDate"
+                                                                                            name="searchDate" for="searchDate">Date</label>
+                                                                                        <div class="col-sm-4">
+                                                                                            <input type="date" id="searchStartDate" name="searchStartDate"
+                                                                                                class="form-control" placeholder="Tulis Date">
+                                                                                            <label class="col-sm-4 col-form-label">to</label>
+                                                                                            <input type="date" id="searchEndDate" name="searchEndDate" class="form-control"
+                                                                                                placeholder="Tulis Date">
+                                                                                        </div>
+                                                                                    </div>
+                                                    
+                                                                                    <div class="card-footer">
+                                                                                        <button type="submit" class="btn btn-primary">Cari</button>
+                                                    
+                                                                                        <a href="/utama" class="btn btn-warning">Reset</a>
+                                                                                    </div>
+                                                    
+                                                                                </form>
+                                                                            </div>
+                                                    
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                                <div class="col-xl-8">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <div class="d-sm-flex flex-wrap">
+                                                                                <h4 class="card-title mb-4">Tabel Hasil Pencarian</h4>
+                                                                            </div>
+                                                    
+                                                                            <div class="col-xl-12">
+                                                    
+                                                                                <!-- Tab panes -->
+                                                                                <!--Tempat tabel data -->
+                                                                                <div class="table-responsive">
+                                                                                    <table class="table align-middle table-nowrap table-check">
+                                                                                        <thead class="table-light">
+                                                                                            <tr>
+                                                                                                <th style="width: 20px;" class="align-middle">
+                                                                                                    <div class="form-check font-size-16">
+                                                                                                        <input class="form-check-input" type="checkbox" id="checkAll">
+                                                                                                        <label class="form-check-label" for="checkAll"></label>
+                                                                                                    </div>
+                                                                                                </th>
+                                                                                                <th class="align-middle">No</th>
+                                                                                                <th class="align-middle">No. Invoice</th>
+                                                                                                <th class="align-middle">Tanggal</th>
+                                                                                                <th class="align-middle">Total Harga</th>
+                                                                                                <th class="align-middle">Action</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <div class="form-check font-size-16">
+                                                                                                        <input class="form-check-input" type="checkbox" id="orderidcheck01">
+                                                                                                        <label class="form-check-label" for="orderidcheck01"></label>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2540</a>
+                                                                                                </td>
+                                                                                                <td>Neal Matthews</td>
+                                                                                                <td>
+                                                                                                    07 Oct, 2019
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    $400
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <div class="d-flex gap-3">
+                                                                                                        <a href="javascript:void(0);" class="text-primary"><i
+                                                                                                                class="fa-solid fa-print"></i></a>
+                                                                                                        <a href="javascript:void(0);" class="text-success"><i
+                                                                                                                class="fa-solid fa-pencil"></i></a>
+                                                                                                        <a href="javascript:void(0);" class="text-danger"><i
+                                                                                                                class="fa-solid fa-trash"></i></a>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                    
+                                                                                <div class="row mb-2">
+                                                                                    <div class="col-sm-4">
+                                                                                        <div class="text-sm-left">
+                                                                                            <a href="/penjualan/add"
+                                                                                                class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i
+                                                                                                    class="fa-solid fa-plus"></i> Tambah Penjualan
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-8">
+                                                                                        <ul class="pagination pagination-rounded justify-content-end mb-2">
+                                                                                            <li class="page-item disabled">
+                                                                                                <a class="page-link" href="javascript: void(0);" aria-label="Previous">
+                                                                                                    <i class="fa-solid fa-angle-left"></i>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <li class="page-item active"><a class="page-link"
+                                                                                                    href="javascript: void(0);">1</a></li>
+                                                                                            <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a>
+                                                                                            </li>
+                                                                                            <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a>
+                                                                                            </li>
+                                                                                            <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a>
+                                                                                            </li>
+                                                                                            <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a>
+                                                                                            </li>
+                                                                                            <li class="page-item">
+                                                                                                <a class="page-link" href="javascript: void(0);" aria-label="Next">
+                                                                                                    <i class="fa-solid fa-angle-right"></i>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div><!-- end col-->
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="gudang" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                                                            single-origin coffee squid. Exercitation +1 labore velit, blog
+                                                            sartorial PBR leggings next level wes anderson artisan four loko
+                                                            farm-to-table craft beer twee. Qui photo booth letterpress,
+                                                            commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
+                                                            vinyl cillum PBR. Homo nostrud organic, assumenda labore
+                                                            aesthetic magna delectus.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="pembelian" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Etsy mixtape wayfarers, ethical wes anderson tofu before they
+                                                            sold out mcsweeney's organic lomo retro fanny pack lo-fi
+                                                            farm-to-table readymade. Messenger bag gentrify pitchfork
+                                                            tattooed craft beer, iphone skateboard locavore carles etsy
+                                                            salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
+                                                            Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
+                                                            mi whatever gluten yr.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="penjualan" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
+                                                            art party before they sold out master cleanse gluten-free squid
+                                                            scenester freegan cosby sweater. Fanny pack portland seitan DIY,
+                                                            art party locavore wolf cliche high life echo park Austin. Cred
+                                                            vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
+                                                            farm-to-table VHS.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="satuan" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                                                            single-origin coffee squid. Exercitation +1 labore velit, blog
+                                                            sartorial PBR leggings next level wes anderson artisan four loko
+                                                            farm-to-table craft beer twee. Qui photo booth letterpress,
+                                                            commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
+                                                            vinyl cillum PBR. Homo nostrud organic, assumenda labore
+                                                            aesthetic magna delectus.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="supplier" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Etsy mixtape wayfarers, ethical wes anderson tofu before they
+                                                            sold out mcsweeney's organic lomo retro fanny pack lo-fi
+                                                            farm-to-table readymade. Messenger bag gentrify pitchfork
+                                                            tattooed craft beer, iphone skateboard locavore carles etsy
+                                                            salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
+                                                            Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
+                                                            mi whatever gluten yr.
+                                                        </p>
+                                                    </div>
+                                                    <div class="tab-pane" id="users" role="tabpanel">
+                                                        <p class="mb-0">
+                                                            Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
+                                                            art party before they sold out master cleanse gluten-free squid
+                                                            scenester freegan cosby sweater. Fanny pack portland seitan DIY,
+                                                            art party locavore wolf cliche high life echo park Austin. Cred
+                                                            vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
+                                                            farm-to-table VHS.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+                </div>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script> © Skote.
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Design & Develop by Themesbrand
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+
+
+<%- include('partials/footer') %>
+
+
+router.get('/', async function (req, res, next) {
+    try {
+    let wheresg = []
+    let valuesg = []
+    let countg = 1
+
+    if (req.query.cari_id) {
+      wheresg.push(`id_gudang ilike '%' || $${countg++} || '%'`);
+      valuesg.push(req.query.cari_id);
+    }
+
+    if (req.query.cari_nama) {
+      wheresg.push(`nama_gudang ilike '%' || $${countg++} || '%'`);
+      valuesg.push(req.query.cari_nama);
+    }
+
+    if (req.query.cari_alamat) {
+      wheresg.push(`alamat_gudang ilike '%' || $${countg++} || '%'`);
+      valuesg.push(req.query.cari_alamat);
+    }
+
+      sqlg = 'SELECT * FROM gudang'
+      if (wheresg.length > 0) {
+        sqlg += ` WHERE ${wheresg.join(' AND ')}`
+      }
+
+      sqlg += ` ORDER BY id_gudang`
+      
+      const { rows } = await db.query(sqlg,valuesg);
+
+      res.render('gudang/list', {
+        rows,
+
+        query: req.query
+      })
+    } catch (e) {
+      res.send(e)
+    }
+  });
