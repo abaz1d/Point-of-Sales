@@ -21,7 +21,7 @@ var satuanRouter = require('./routes/satuan')(pool)
 var supplierRouter = require('./routes/supplier')(pool)
 
 var barangRouter = require('./routes/barang')(pool);
-// var penjualanRouter = require('./routes/penjualan');
+var penjualanRouter = require('./routes/penjualan')(pool);
 // var penmbelianRouter = require('./routes/pembelian');
 var usersRouter = require('./routes/users')(pool);
 
@@ -39,12 +39,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
+
 app.use('/', indexRouter);
 app.use('/gudang', gudangRouter);
 app.use('/satuan', satuanRouter);
 app.use('/supplier', supplierRouter);
 app.use('/barang', barangRouter);
-// app.use('/penjualan', penjualanRouter);
+app.use('/penjualan', penjualanRouter);
 // app.use('/pembeliant', pembeliantRouter);
 app.use('/users', usersRouter)
 
@@ -62,7 +63,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('pages-500');
+  res.render('error');
 });
 
 module.exports = app;
