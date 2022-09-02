@@ -105,5 +105,114 @@ module.exports = function (db) {
     }
   });
 
+  router.get('/', isLoggedIn, function (req, res) {
+    // Pagination preparation
+    let limit = 5
+     let currentOffset;
+     let totalPage;
+     let currentLink;
+     let pageInput = parseInt(req.query.page)
+   
+   
+     if (!req.query.page) {
+       currentOffset = 1;
+       pageInput = 1;
+     } else {
+       currentOffset = parseInt(req.query.page);
+     }
+     const offset = (limit * currentOffset) - limit;
+     
+   
+     if (req.url === '/') {
+       currentLink = '/?page=1'
+     } else {
+       if (req.url.includes('/?page')) {
+         currentLink = req.url
+       } else {
+         if (req.url.includes('&page=')) {
+           currentLink = req.url
+         } else {
+           if (req.url.includes('&page=')) {
+           } else {
+             currentLink = req.url + `&page=${pageInput}`
+           }
+         }
+       }
+     }
+   
+   
+       const { cari_id, cari_nama, cari_tanggal_awal, cari_tanggal_akhir } = req.query
+       let search = []
+       let count = 1
+       let syntax = []
+       let sql_count = `SELECT count(beli.no_invoice_beli) AS total 
+       FROM pembelian beli`
+       let sql = `SELECT * FROM pembelian beli`
+   
+       if (cari_id) {
+         sql += ' WHERE '
+         sql_count += ' WHERE '
+         search.push(`%${cari_id}%`)
+         syntax.push(`no_invoice_beli ILIKE $${count}`)
+         count++
+       }
+       if (cari_tanggal_awal && cari_tanggal_akhir) {
+         if (!sql.includes(' WHERE ')) {
+           sql += ' WHERE'
+           sql_count += ' WHERE'
+         }
+         search.push(`${cari_tanggal_awal}`)
+         search.push(`${cari_tanggal_akhir}`)
+         syntax.push(` tanggal_pembelian >= $${count} AND tanggal_pembelian < $${count + 1}`)
+         count++
+         count++
+       } else if (cari_tanggal_awal) {
+         if (!sql.includes(' WHERE ')) {
+           sql += ' WHERE'
+           sql_count += ' WHERE'
+         }
+         search.push(`${cari_tanggal_awal}`)
+         syntax.push(` tanggal_pembelian >= $${count}`)
+         count++
+       } else if (cari_tanggal_akhir) {
+         if (!sql.includes(' WHERE ')) {
+           sql += ' WHERE'
+           sql_count += ' WHERE'
+         }
+         search.push(`${cari_tanggal_akhir}`)
+         syntax.push(` tanggal_pembelian <= $${count}`)
+         count++
+       }
+       if (syntax.length > 0) {
+         sql += syntax.join(' AND ')
+         sql += ` ORDER BY beli.no_invoice_beli ASC`
+         sql_count += syntax.join(' AND ')
+         sql_count += `  GROUP BY beli.no_invoice_beli`
+         sql_count += ` ORDER BY beli.no_invoice_beli ASC`
+       }
+       sql += ` LIMIT 5 OFFSET ${offset}`
+       db.query(sql_count, search, (err, data) => {
+         if (err) console.log('test count', err)
+      totalData = data.rows[0].total
+                 if (syntax.length > 0) {
+                   data.rows.forEach((item) => {
+                     totalData = parseInt(totalData) + parseInt(item.total)
+                     if (totalData > parseInt(data.rows.length)) {
+                       totalData -= 1
+                     }
+                   })
+                 }
+                
+                 totalPage = Math.ceil(totalData / limit)
+         db.query(sql, search, (err, rows) => {
+           if (err) console.log('test sql', err)
+           res.render('barang_masuk', { rows: rows.rows, currentDir: 'barang_masuk',
+            current: '', moment, currencyFormatter, page: totalPage, currentPage: pageInput,
+             currentUrl: currentLink, offset,
+            link: req.url, query: req.query });
+         })
+       })
+     })
+
   return router;
 }
