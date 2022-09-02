@@ -193,8 +193,8 @@ module.exports = function (db) {
     res.render('collapse');
   });
 
-  router.get('/register', function (req, res, next) {
-    res.render('register');
+  router.get('/print', function (req, res, next) {
+    res.render('print');
   });
 
   router.post('/register', function (req, res, next) {

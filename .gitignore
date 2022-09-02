@@ -242,6 +242,7 @@ Temporary Items
 *.code-workspace
 package-lock.json
 node_modules
-
+coba copy.ejs
+coba copy.js
 # End of https://www.toptal.com/developers/gitignore/api/macos,expressionengine,visualstudiocode
 # End of https://www.toptal.com/developers/gitignore/api/macos,expressionengine,visualstudiocode

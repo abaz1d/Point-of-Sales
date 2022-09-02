@@ -32,11 +32,12 @@ module.exports = function (db) {
 
         if (syntax.length > 0) {
             sql += syntax.join(' AND ')
-            sql += ` ORDER BY id_barang ASC`
+            
 
             sql_count += syntax.join(' AND ')
             sql_count += ` GROUP BY id_barang ORDER BY id_barang ASC`
         }
+            sql += ` ORDER BY id_barang ASC`
         db.query(sql, search, (err, barang) => {
             if (err) console.log(err)
             console.log('sql', sql)

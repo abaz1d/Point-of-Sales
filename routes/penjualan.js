@@ -50,11 +50,13 @@ module.exports = function (db) {
     
             if (syntax.length > 0) {
                 sql += syntax.join(' AND ')
-                sql += ` ORDER BY tanggal_penjualan DESC`
+                
     
                 sql_count += syntax.join(' AND ')
                 sql_count += ` GROUP BY no_invoice ORDER BY id_barang ASC`
             }
+                sql += ` ORDER BY tanggal_penjualan DESC`
+           
             const { rows } = await db.query(sql,search);
             //console.log('rows',rows)
             //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
@@ -109,7 +111,7 @@ module.exports = function (db) {
     //v
     router.post('/upjual', async function (req, res, next) {
         try {
-            udatejual = await db.query('UPDATE penjualan SET total_bayar_jual = $1, kembalian_jual = $2 WHERE no_invoice = $3 returning *', [req.body.total_bayar_jual, req.body.kembalian, req.body.no_invoice])
+            udatejual = await db.query('UPDATE penjualan SET total_harga_jual = $1, total_bayar_jual = $2, kembalian_jual = $3 WHERE no_invoice = $4 returning *', [req.body.total_harga_jual, req.body.total_bayar_jual, req.body.kembalian, req.body.no_invoice])
             const { rows } = await db.query('SELECT * FROM penjualan WHERE no_invoice = $1', [req.body.no_invoice])
             res.json(rows)
         } catch (e) {
@@ -129,7 +131,7 @@ module.exports = function (db) {
     router.get('/delete/:no_invoice', async function (req, res, next) {
         try {
             const { rows } = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
-            delDetail = await db.query('DELETE FROM penjualan_detail WHERE no_invoice = $1', [req.params.no_invoice])
+            delPen = await db.query('DELETE FROM penjualan_detail WHERE no_invoice = $1', [req.params.no_invoice])
             res.redirect('/penjualan')
         } catch (e) {
             console.log(e)
@@ -139,7 +141,8 @@ module.exports = function (db) {
 
     router.delete('/delitem/:id_detail_jual', async function (req, res, next) {
         try {
-            const { rows } = await db.query('DELETE FROM penjualan_detail WHERE id_detail_jual = $1', [req.params.id_detail_jual])
+            delDetail = await db.query('DELETE FROM penjualan_detail WHERE id_detail_jual = $1', [req.params.id_detail_jual])
+            const { rows } = await db.query('SELECT SUM(total_harga_detail_jual)  AS total FROM penjualan_detail WHERE no_invoice = $1', [req.body.no_invoice])
             res.json(rows)
         } catch (e) {
             console.log(e)

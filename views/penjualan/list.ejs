@@ -81,8 +81,8 @@
 																				<div class="row">
 																					<div class="col-md-10">
 																						<div class="mb-3">
-																							<label for="id_item" class="form-label">ID Barang & Item</label>
-																							<select class="form-select" name="id_item" id="id_item" required>
+																							<label for="id-item" class="form-label">ID Barang & Item</label>
+																							<select class="form-select" name="id-item" id="id-item" required>
 																								<option disabled selected>Pilih Barang & Item</option>
 																								<% varian.forEach((item)=> { %>
 																									<option value="<%= item.id_varian %>">
@@ -143,7 +143,7 @@
 																		</div>
 																		<hr class="border border-dark">
 																		<div class="card-body">
-																			<div class="table-responsive">
+																			<div class="table-responsive overflow-auto">
 																				<h4 class="card-title mb-5">Tabel Detail Penjualan <a href="#" class="text-danger"></a></h4>
 																				<table id="detail-table" class="table align-middle table-nowrap table-bordered">
 																					<thead class="table-light">
@@ -154,7 +154,7 @@
 																							<th class="align-middle">QTY</th>
 																							<th class="align-middle">Harga</th>
 																							<th class="align-middle">Total Harga</th>
-																							<th><a href="javascript:void(0)" id="refresh" class="text-primary"><i class="fa-solid fa-arrows-rotate"></i></a></th>
+																							<th>-</th>
 																						</tr>
 																					</thead>
 																						<tbody>
@@ -334,7 +334,6 @@
 			const editData = (item) => {
 			item = JSON.parse(item)
 			no_invoice = item.no_invoice
-
 			const readDetails = () => {
                 $.get(`/penjualan/details/${no_invoice}`).done(function (data) {
                     let html = ''
@@ -360,7 +359,7 @@
                                 ${currencyFormatter.format(item.total_harga_detail_jual)}
                             </td>
 							<td>
-                                <a href="javascript:void(0)" id="delitem-button" onClick="removeItem(${item.id_detail_jual})" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                <a href="javascript:void(0)" id="delitem-button" onClick='removeItem(${JSON.stringify(item)})' class="text-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                         `
@@ -388,14 +387,21 @@
             })
         	}
 
-			const removeItem = (id_detail_jual) => {
-				//console.log('id_detail',id_detail_jual)
+			const removeItem = (item) => {
+			//console.log('item =>',item)
+			
+			no_invoice = item.no_invoice
+			id_detail_jual = item.id_detail_jual
             $.ajax({
                 method: "DELETE",
                 url: `/penjualan/delitem/${id_detail_jual}`,
-                dataType: "json"
-            }).done(function (response) {
+                dataType: "json",
+				data: { no_invoice }
+            }).done(function (data) {
                 readDetails()
+				const total_harga = $('#total_harga').val(parseInt(data[0].total))
+				const total_bayar = $('#total_bayar').val()
+				$('#kembalian').val((total_bayar - parseInt(data[0].total)))
             }).fail(function (err) {
                 alert('gagal pakai jquery delete item')
             })
@@ -414,7 +420,7 @@
                 })
 
 
-                $('#id_item').change(function () {
+                $('#id-item').change(function () {
                     const id_varian = $(this).val()
                     $.get(`/penjualan/barang/${id_varian}`).done(function (data) {
                         $('#nama_barang').val(data.nama_barang)
@@ -441,7 +447,7 @@
                 $('#detail-form').submit(function (e) {
                     e.preventDefault();
                     const no_invoice = $('#no_invoice').val()
-                    const id_varian = $('#id_item').val()
+                    const id_varian = $('#id-item').val()
                     const qty = $('#qty').val()
                     
                     $.post('/penjualan/additem', { no_invoice, id_varian, qty }).done(function (data) {
@@ -454,10 +460,11 @@
 
                 $('#jual-form').submit(function () {
                     //e.preventDefault();
+					const total_harga_jual = $('#total_harga').val()
                     const no_invoice = $('#no_invoice').val()
                     const total_bayar_jual = $('#total_bayar').val()
                     const kembalian = $('#kembalian').val()
-                    $.post('/penjualan/upjual', {total_bayar_jual, kembalian, no_invoice}).done(function (data) {
+                    $.post('/penjualan/upjual', {total_harga_jual, total_bayar_jual, kembalian, no_invoice}).done(function (data) {
                         //res.redirect('/utama')
                     })
                 })
@@ -495,7 +502,7 @@
                                 ${currencyFormatter.format(item.total_harga_detail_jual)}
                             </td>
 							<td>
-                                <a href="javascript:void(0)" id="delitem-button" onClick="removeItem(${item.id_detail_jual})" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                                <a href="javascript:void(0)" id="delitem-button" onClick='removeItem(${JSON.stringify(item)})' class="text-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                         `
