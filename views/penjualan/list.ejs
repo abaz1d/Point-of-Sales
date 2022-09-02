@@ -154,6 +154,7 @@
 																							<th class="align-middle">QTY</th>
 																							<th class="align-middle">Harga</th>
 																							<th class="align-middle">Total Harga</th>
+																							<th><a href="javascript:void(0)" id="refresh" class="text-primary"><i class="fa-solid fa-arrows-rotate"></i></a></th>
 																						</tr>
 																					</thead>
 																						<tbody>
@@ -358,6 +359,9 @@
                             <td class="right-position">
                                 ${currencyFormatter.format(item.total_harga_detail_jual)}
                             </td>
+							<td>
+                                <a href="javascript:void(0)" id="delitem-button" onClick="removeItem(${item.id_detail_jual})" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                            </td>
                         </tr>
                         `
                     })
@@ -381,6 +385,19 @@
                 //readData()
             }).fail(function (err) {
                 alert('gagal pakai jquery')
+            })
+        	}
+
+			const removeItem = (id_detail_jual) => {
+				//console.log('id_detail',id_detail_jual)
+            $.ajax({
+                method: "DELETE",
+                url: `/penjualan/delitem/${id_detail_jual}`,
+                dataType: "json"
+            }).done(function (response) {
+                readDetails()
+            }).fail(function (err) {
+                alert('gagal pakai jquery delete item')
             })
         	}
 
@@ -476,6 +493,9 @@
                             </td>
                             <td class="right-position">
                                 ${currencyFormatter.format(item.total_harga_detail_jual)}
+                            </td>
+							<td>
+                                <a href="javascript:void(0)" id="delitem-button" onClick="removeItem(${item.id_detail_jual})" class="text-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                         `

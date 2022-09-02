@@ -109,9 +109,9 @@ module.exports = function (db) {
     //v
     router.post('/upjual', async function (req, res, next) {
         try {
-            detail = await db.query('UPDATE penjualan SET total_bayar_jual = $1, kembalian_jual = $2 WHERE no_invoice = $3', [req.body.total_bayar_jual, req.body.kembalian, req.body.no_invoice])
-
-            //res.json(rows[0])
+            udatejual = await db.query('UPDATE penjualan SET total_bayar_jual = $1, kembalian_jual = $2 WHERE no_invoice = $3 returning *', [req.body.total_bayar_jual, req.body.kembalian, req.body.no_invoice])
+            const { rows } = await db.query('SELECT * FROM penjualan WHERE no_invoice = $1', [req.body.no_invoice])
+            res.json(rows)
         } catch (e) {
             res.send(e)
         }
@@ -129,14 +129,20 @@ module.exports = function (db) {
     router.get('/delete/:no_invoice', async function (req, res, next) {
         try {
             const { rows } = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
-            //console.log('data', rows)
-            //console.log(rows)
-            //detail = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
+            delDetail = await db.query('DELETE FROM penjualan_detail WHERE no_invoice = $1', [req.params.no_invoice])
             res.redirect('/penjualan')
-            //res.redirect('/penjualan')
         } catch (e) {
             console.log(e)
             res.render(e)
+        }
+    })
+
+    router.delete('/delitem/:id_detail_jual', async function (req, res, next) {
+        try {
+            const { rows } = await db.query('DELETE FROM penjualan_detail WHERE id_detail_jual = $1', [req.params.id_detail_jual])
+            res.json(rows)
+        } catch (e) {
+            console.log(e)
         }
     })
 

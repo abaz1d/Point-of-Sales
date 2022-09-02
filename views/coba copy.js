@@ -1,218 +1,146 @@
 var express = require('express');
 var router = express.Router();
-const { ObjectId } = require('mongodb');
+var moment = require('moment');
+var path = require('path');
+const { currencyFormatter } = require('../helpers/util')
 
 module.exports = function (db) {
-  //const collection = db.collection('users');
+    router.get('/', async function (req, res, next) {
+        try {
+            const { cari_inv, searchStartDate, searchEndDate } = req.query
+            let search = []
+            let count = 1
+            let syntax = []
+            let sql_count = 'SELECT count(*) AS total FROM barang'
+            let sql = 'SELECT * FROM penjualan'
+            if (cari_inv) {
+                sql += ' WHERE '
+                sql_count += ' WHERE '
+                search.push(`%${cari_inv}%`)
+                syntax.push(`no_invoice ilike '%' || $${count++} || '%'`)
+                count++
+            }
+            if (searchStartDate && searchEndDate) {
+                if (!sql.includes(' WHERE ')) {
+                  sql += ' WHERE'
+                  sql_count += ' WHERE'
+                }
+                search.push(`${searchStartDate}`)
+                search.push(`${searchEndDate}`)
+                syntax.push(` tanggal_penjualan >= $${count} AND tanggal_penjualan < $${count + 1}`)
+                count++
+                count++
+              } else if (searchStartDate) {
+                if (!sql.includes(' WHERE ')) {
+                  sql += ' WHERE'
+                  sql_count += ' WHERE'
+                }
+                search.push(`${searchStartDate}`)
+                syntax.push(` tanggal_penjualan >= $${count}`)
+                count++
+              } else if (searchEndDate) {
+                if (!sql.includes(' WHERE ')) {
+                  sql += ' WHERE'
+                  sql_count += ' WHERE'
+                }
+                search.push(`${searchEndDate}`)
+                syntax.push(` tanggal_penjualan <= $${count}`)
+                count++
+              }
+    
+            if (syntax.length > 0) {
+                sql += syntax.join(' AND ')
+                sql += ` ORDER BY tanggal_penjualan DESC`
+    
+                sql_count += syntax.join(' AND ')
+                sql_count += ` GROUP BY no_invoice ORDER BY id_barang ASC`
+            }
+            const { rows } = await db.query(sql,search);
+            //console.log('rows',rows)
+            //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
+            const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
+            //console.log(req.query.noInvoice, noInvoice)
+            const details = await db.query('SELECT dp.*, v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_jual', [noInvoice]);
+            const varian = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang');
+            res.render('penjualan/list', {
+                penjualan: rows,
+                moment,
+                currencyFormatter,
+                detailsj: details.rows,
+                varian: varian.rows,
+                query: req.query
+            })
+        } catch (e) {
+            res.send(e)
+        }
 
-  //GET, READ USERS
-  router.get('/', async function (req, res, next) {
+    });
+    //v
+    router.post('/create', async function (req, res, next) {
+        try {
+            const { rows } = await db.query('INSERT INTO penjualan(total_harga_jual) VALUES(0) returning *')
+            //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
+            res.json(rows[0])
+        } catch (e) {
+            res.send(e)
+        }
+    });
+    //v
 
-    //const url = req.url == '/' ? '/?page=1' : req.url;
-    const page = req.query.page || 1;
-    const limit = 3 //parseInt(req.query.display);
-    //const offset = (page - 1) * limit;
-    const wheres = {}
-    //const filter = `&idCheck=${req.query.idCheck}&id=${req.query.id}&stringCheck=${req.query.stringCheck}&string=${req.query.string}&integerCheck=${req.query.integerCheck}&integer=${req.query.integer}&floatCheck=${req.query.floatCheck}&float=${req.query.float}&dateCheck=${req.query.dateCheck}&startDate=${req.query.startDate}&endDate=${req.query.endDate}&booleanCheck=${req.query.booleanCheck}&boolean=${req.query.boolean}`
-    var sortBy = req.query.sortBy == undefined ? 'string' : req.query.sortBy;
-    var sortMode = req.query.sortMode == undefined ? 1 : req.query.sortMode;
-    var sortMongo = JSON.parse(`{"${sortBy}" : ${sortMode}}`);
-    const offset = limit == 'all' ? 0 : (page - 1) * limit
+    //v
+    router.get('/barang/:id_varian', async function (req, res, next) {
+        try {
+            const { rows } = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang WHERE id_varian = $1 ORDER BY var.id_barang', [req.params.id_varian])
+            res.json(rows[0])
+        } catch (e) {
+            res.send(e)
+        }
+    });
+    //v
+    router.post('/additem', async function (req, res, next) {
+        try {
+            detail = await db.query('INSERT INTO penjualan_detail(no_invoice, id_varian, qty)VALUES ($1, $2, $3) returning *', [req.body.no_invoice, req.body.id_varian, req.body.qty])
+            const { rows } = await db.query('SELECT * FROM penjualan WHERE no_invoice = $1', [req.body.no_invoice])
+            res.json(rows[0])
+        } catch (e) {
+            res.send(e)
+        }
+    });
+    //v
+    router.post('/upjual', async function (req, res, next) {
+        try {
+            detail = await db.query('UPDATE penjualan SET total_bayar_jual = $1, kembalian_jual = $2 WHERE no_invoice = $3', [req.body.total_bayar_jual, req.body.kembalian, req.body.no_invoice])
 
-    if (req.query.string) {
-      wheres["string"] = new RegExp(`${req.query.string}`, 'i')
-    }
+            //res.json(rows[0])
+        } catch (e) {
+            res.send(e)
+        }
+    });
+    //v
+    router.get('/details/:no_invoice', async function (req, res, next) {
+        try {
+            const { rows } = await db.query('SELECT dp.*, v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_jual', [req.params.no_invoice]);
+            res.json(rows)
+        } catch (e) {
+            res.send(e)
+        }
+    });
 
-    if (req.query.integer) {
-      wheres['integer'] = parseInt(req.query.integer)
-    }
-
-    if (req.query.float) {
-      wheres['float'] = JSON.parse(req.query.float)
-    }
-
-    //======
-    if (req.query.startDate && req.query.endDate) {
-      wheres['date'] = { $gte: new Date(`${req.query.startDate}`), $lte: new Date(`${req.query.endDate}`) }
-    }
-    else if (req.query.startDate) {
-      wheres['date'] = { $gte: new Date(`${req.query.startDate}`) }
-    }
-    else if (req.query.endDate) {
-      wheres['date'] = { $lte: new Date(`${req.query.endDate}`) }
-    }
-    //======   
-
-    if (req.query.boolean) {
-      wheres['boolean'] = (req.query.boolean)
-    }
-
-
-    try {
-      const collection = db.collection('users');
-
-      const totalData = await collection.find(wheres).count();
-      const totalPages = limit == 'all' ? 1 : Math.ceil(totalData / limit)
-      const limitation = limit == 'all' ? {} : { limit: parseInt(limit), skip: offset }
-
-      const users = await collection.find(wheres, limitation).collation({ 'locale': 'en' }).sort(sortMongo).toArray();
-      console.log('sortMongo', sortMongo)
-      res.status(200).json({
-        data: users,
-        totalData,
-        totalPages,
-        display: limit,
-        page: parseInt(page)
-        // sortBy,
-        // sortMode
-      })
-    } catch (e) {
-      res.json(e)
-    }
-  });
-
-  //POST, CREATE USERS
-  router.post('/', async function (req, res, next) {
-    try {
-      const collection = db.collection('users');
-      const insertResult = await collection.insertOne({ string: req.body.string, integer: parseInt(req.body.integer), float: JSON.parse(req.body.float), date: new Date(req.body.date), boolean: req.body.boolean });
-      res.status(201).json(insertResult)
-    } catch (e) {
-      res.json(e)
-    }
-  });
+    router.get('/delete/:no_invoice', async function (req, res, next) {
+        try {
+            const { rows } = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
+            //console.log('data', rows)
+            //console.log(rows)
+            //detail = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
+            res.redirect('/penjualan')
+            //res.redirect('/penjualan')
+        } catch (e) {
+            console.log(e)
+            res.render(e)
+        }
+    })
 
 
-  //PUT, EDIT USERS
-  router.put('/:id', async function (req, res, next) {
-    try {
-      const collection = db.collection('users');
-      const updateResult = await collection.updateOne({ _id: ObjectId(req.params.id) }, { $set: { string: req.body.string, integer: parseInt(req.body.integer), float: JSON.parse(req.body.float), date: new Date(req.body.date), boolean: req.body.boolean } });
-      res.status(201).json(updateResult)
-    } catch (e) {
-      res.json(e)
-    }
-  });
-
-  //DELETE, USSER DELETE
-  router.delete('/:id', async function (req, res, next) {
-    try {
-      const collection = db.collection('users');
-      const deleteResult = await collection.deleteOne({ _id: ObjectId(req.params.id) });
-      res.status(201).json(deleteResult)
-    } catch (e) {
-      res.json(e)
-    }
-  });
-
-  router.get('/', isLoggedIn, function (req, res) {
-    // Pagination preparation
-    let limit = 5
-     let currentOffset;
-     let totalPage;
-     let currentLink;
-     let pageInput = parseInt(req.query.page)
-   
-   
-     if (!req.query.page) {
-       currentOffset = 1;
-       pageInput = 1;
-     } else {
-       currentOffset = parseInt(req.query.page);
-     }
-     const offset = (limit * currentOffset) - limit;
-     
-   
-     if (req.url === '/') {
-       currentLink = '/?page=1'
-     } else {
-       if (req.url.includes('/?page')) {
-         currentLink = req.url
-       } else {
-         if (req.url.includes('&page=')) {
-           currentLink = req.url
-         } else {
-           if (req.url.includes('&page=')) {
-           } else {
-             currentLink = req.url + `&page=${pageInput}`
-           }
-         }
-       }
-     }
-   
-   
-       const { cari_id, cari_nama, cari_tanggal_awal, cari_tanggal_akhir } = req.query
-       let search = []
-       let count = 1
-       let syntax = []
-       let sql_count = `SELECT count(beli.no_invoice_beli) AS total 
-       FROM pembelian beli`
-       let sql = `SELECT * FROM pembelian beli`
-   
-       if (cari_id) {
-         sql += ' WHERE '
-         sql_count += ' WHERE '
-         search.push(`%${cari_id}%`)
-         syntax.push(`no_invoice_beli ILIKE $${count}`)
-         count++
-       }
-       if (cari_tanggal_awal && cari_tanggal_akhir) {
-         if (!sql.includes(' WHERE ')) {
-           sql += ' WHERE'
-           sql_count += ' WHERE'
-         }
-         search.push(`${cari_tanggal_awal}`)
-         search.push(`${cari_tanggal_akhir}`)
-         syntax.push(` tanggal_pembelian >= $${count} AND tanggal_pembelian < $${count + 1}`)
-         count++
-         count++
-       } else if (cari_tanggal_awal) {
-         if (!sql.includes(' WHERE ')) {
-           sql += ' WHERE'
-           sql_count += ' WHERE'
-         }
-         search.push(`${cari_tanggal_awal}`)
-         syntax.push(` tanggal_pembelian >= $${count}`)
-         count++
-       } else if (cari_tanggal_akhir) {
-         if (!sql.includes(' WHERE ')) {
-           sql += ' WHERE'
-           sql_count += ' WHERE'
-         }
-         search.push(`${cari_tanggal_akhir}`)
-         syntax.push(` tanggal_pembelian <= $${count}`)
-         count++
-       }
-       if (syntax.length > 0) {
-         sql += syntax.join(' AND ')
-         sql += ` ORDER BY beli.no_invoice_beli ASC`
-         sql_count += syntax.join(' AND ')
-         sql_count += `  GROUP BY beli.no_invoice_beli`
-         sql_count += ` ORDER BY beli.no_invoice_beli ASC`
-       }
-       sql += ` LIMIT 5 OFFSET ${offset}`
-       db.query(sql_count, search, (err, data) => {
-         if (err) console.log('test count', err)
-      totalData = data.rows[0].total
-                 if (syntax.length > 0) {
-                   data.rows.forEach((item) => {
-                     totalData = parseInt(totalData) + parseInt(item.total)
-                     if (totalData > parseInt(data.rows.length)) {
-                       totalData -= 1
-                     }
-                   })
-                 }
-                
-                 totalPage = Math.ceil(totalData / limit)
-         db.query(sql, search, (err, rows) => {
-           if (err) console.log('test sql', err)
-           res.render('barang_masuk', { rows: rows.rows, currentDir: 'barang_masuk',
-            current: '', moment, currencyFormatter, page: totalPage, currentPage: pageInput,
-             currentUrl: currentLink, offset,
-            link: req.url, query: req.query });
-         })
-       })
-     })
-
-  return router;
+    return router;
 }
+
