@@ -2,6 +2,9 @@ var express = require('express');
 const gudang = require('./gudang');
 const satuan = require('./satuan');
 var router = express.Router();
+var moment = require('moment');
+var path = require('path');
+const { currencyFormatter } = require('../helpers/util')
 
 /* GET home page. */
 module.exports = function (db) {
@@ -172,29 +175,163 @@ module.exports = function (db) {
 
               db.query(usql, uvalues, (err, users) => {
 
-                res.render('utama', {
-                  varian: varian.rows,
-                  barang: barang.rows,
-                  gudang: gudang.rows,
-                  satuan: satuan.rows,
-                  supplier: supplier.rows,
-                  users: users.rows,
-                  query: req.query
-                });
+                const { cari_inv, searchStartDate, searchEndDate } = req.query
+                let searchju = []
+                let countju = 1
+                let syntaxju = []
+                let sqlju_countju = 'SELECT countju(*) AS total FROM barang'
+                let sqlju = 'SELECT * FROM penjualan'
+                if (cari_inv) {
+                  sqlju += ' WHERE '
+                  sqlju_countju += ' WHERE '
+                  searchju.push(`%${cari_inv}%`)
+                  syntaxju.push(`no_invoice ilike '%' || $${countju++} || '%'`)
+                  countju++
+                }
+                if (searchStartDate && searchEndDate) {
+                  if (!sqlju.includes(' WHERE ')) {
+                    sqlju += ' WHERE'
+                    sqlju_countju += ' WHERE'
+                  }
+                  searchju.push(`${searchStartDate}`)
+                  searchju.push(`${searchEndDate}`)
+                  syntaxju.push(` tanggal_penjualan >= $${countju} AND tanggal_penjualan < $${countju + 1}`)
+                  countju++
+                  countju++
+                } else if (searchStartDate) {
+                  if (!sqlju.includes(' WHERE ')) {
+                    sqlju += ' WHERE'
+                    sqlju_countju += ' WHERE'
+                  }
+                  searchju.push(`${searchStartDate}`)
+                  syntaxju.push(` tanggal_penjualan >= $${countju}`)
+                  countju++
+                } else if (searchEndDate) {
+                  if (!sqlju.includes(' WHERE ')) {
+                    sqlju += ' WHERE'
+                    sqlju_countju += ' WHERE'
+                  }
+                  searchju.push(`${searchEndDate}`)
+                  syntaxju.push(` tanggal_penjualan <= $${countju}`)
+                  countju++
+                }
+
+                if (syntaxju.length > 0) {
+                  sqlju += syntaxju.join(' AND ')
+
+
+                  sqlju_countju += syntaxju.join(' AND ')
+                  sqlju_countju += ` GROUP BY no_invoice ORDER BY id_barang ASC`
+                }
+                sqlju += ` ORDER BY tanggal_penjualan DESC`
+
+                db.query(sqlju, searchju, (err, penjualan) => {
+                  const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
+                  db.query('SELECT dp.*, v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_jual', [noInvoice], (err, detailsj) => {
+                    db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang', (err, varianju) => {
+                      db.query('SELECT dp.*,pe.*,v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN penjualan as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice], (err, print) => {
+                        //console.log('print', print.rows[0].no_invoice)
+
+                        const { cari_inv2, searchblStartDate2, searchblEndDate2 } = req.query
+                        let searchbl = []
+                        let countbl = 1
+                        let syntaxbl = []
+                        let sqlbl_countbl = 'SELECT countbl(*) AS total FROM barang'
+                        let sqlbl = 'SELECT * FROM pembelian'
+                        if (cari_inv2) {
+                          sqlbl += ' WHERE '
+                          sqlbl_countbl += ' WHERE '
+                          searchbl.push(`%${cari_inv2}%`)
+                          syntaxbl.push(`no_invoice ilike '%' || $${countbl++} || '%'`)
+                          countbl++
+                        }
+                        if (searchblStartDate2 && searchblEndDate2) {
+                          if (!sqlbl.includes(' WHERE ')) {
+                            sqlbl += ' WHERE'
+                            sqlbl_countbl += ' WHERE'
+                          }
+                          searchbl.push(`${searchblStartDate2}`)
+                          searchbl.push(`${searchblEndDate2}`)
+                          syntaxbl.push(` tanggal_pembelian >= $${countbl} AND tanggal_pembelian < $${countbl + 1}`)
+                          countbl++
+                          countbl++
+                        } else if (searchblStartDate2) {
+                          if (!sqlbl.includes(' WHERE ')) {
+                            sqlbl += ' WHERE'
+                            sqlbl_countbl += ' WHERE'
+                          }
+                          searchbl.push(`${searchblStartDate2}`)
+                          syntaxbl.push(` tanggal_pembelian >= $${countbl}`)
+                          countbl++
+                        } else if (searchblEndDate2) {
+                          if (!sqlbl.includes(' WHERE ')) {
+                            sqlbl += ' WHERE'
+                            sqlbl_countbl += ' WHERE'
+                          }
+                          searchbl.push(`${searchblEndDate2}`)
+                          syntaxbl.push(` tanggal_pembelian <= $${countbl}`)
+                          countbl++
+                        }
+
+                        if (syntaxbl.length > 0) {
+                          sqlbl += syntaxbl.join(' AND ')
+
+
+                          sqlbl_countbl += syntaxbl.join(' AND ')
+                          sqlbl_countbl += ` GROUP BY no_invoice ORDER BY id_barang ASC`
+                        }
+                        sqlbl += ` ORDER BY tanggal_pembelian DESC`
+
+                        db.query(sqlbl, searchbl, (err, pembelian) => {
+                          //console.log('rows',rows)
+                          //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
+                          const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
+
+                          db.query('SELECT dp.*, v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_beli', [noInvoice], (err, detailsb) => {
+                            db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang', (err, varianb) => {
+                              db.query('SELECT * FROM gudang ORDER BY id_gudang', (err, gudangb) => {
+                                db.query('SELECT * FROM supplier ORDER BY id_supplier', (err, supplierb) => {
+                                  db.query('SELECT dp.*,pe.*,v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN pembelian as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice], (err, print2) => {
+                                    //console.log('print', print.rows[0].no_invoice)
+
+                                    res.render('utama', {
+                                      varian: varian.rows,
+                                      barang: barang.rows,
+                                      gudang: gudang.rows,
+                                      gudangb: gudangb.rows,
+                                      penjualan: penjualan.rows,
+                                      pembelian: pembelian.rows,
+                                      satuan: satuan.rows,
+                                      supplierb: supplierb.rows,
+                                      supplier: supplier.rows,
+                                      users: users.rows,
+                                      moment,
+                                      currencyFormatter,
+                                      detailsj: detailsj.rows,
+                                      detailsb: detailsb.rows,
+                                      varian: varian.rows,
+                                      varianb: varianb.rows,
+                                      varianju: varianju.rows,
+                                      print,
+                                      print2,
+                                      query: req.query
+                                    })
+                                  })
+                                })
+                              })
+                            })
+                          })
+                        })
+                      })
+                    })
+                  })
+                })
               })
             })
           })
         })
       })
     })
-  });
-
-  router.get('/collapse', function (req, res, next) {
-    res.render('collapse');
-  });
-
-  router.get('/print', function (req, res, next) {
-    res.render('print');
   });
 
   router.post('/register', function (req, res, next) {

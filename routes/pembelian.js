@@ -7,67 +7,76 @@ const { currencyFormatter } = require('../helpers/util')
 module.exports = function (db) {
     router.get('/', async function (req, res, next) {
         try {
-            const { cari_inv, searchStartDate, searchEndDate } = req.query
+            const { cari_inv2, searchStartDate2, searchEndDate2 } = req.query
             let search = []
             let count = 1
             let syntax = []
             let sql_count = 'SELECT count(*) AS total FROM barang'
-            let sql = 'SELECT * FROM penjualan'
-            if (cari_inv) {
+            let sql = 'SELECT * FROM pembelian'
+            if (cari_inv2) {
                 sql += ' WHERE '
                 sql_count += ' WHERE '
-                search.push(`%${cari_inv}%`)
+                search.push(`%${cari_inv2}%`)
                 syntax.push(`no_invoice ilike '%' || $${count++} || '%'`)
                 count++
             }
-            if (searchStartDate && searchEndDate) {
+            if (searchStartDate2 && searchEndDate2) {
                 if (!sql.includes(' WHERE ')) {
                   sql += ' WHERE'
                   sql_count += ' WHERE'
                 }
-                search.push(`${searchStartDate}`)
-                search.push(`${searchEndDate}`)
-                syntax.push(` tanggal_penjualan >= $${count} AND tanggal_penjualan < $${count + 1}`)
+                search.push(`${searchStartDate2}`)
+                search.push(`${searchEndDate2}`)
+                syntax.push(` tanggal_pembelian >= $${count} AND tanggal_pembelian < $${count + 1}`)
                 count++
                 count++
-              } else if (searchStartDate) {
+              } else if (searchStartDate2) {
                 if (!sql.includes(' WHERE ')) {
                   sql += ' WHERE'
                   sql_count += ' WHERE'
                 }
-                search.push(`${searchStartDate}`)
-                syntax.push(` tanggal_penjualan >= $${count}`)
+                search.push(`${searchStartDate2}`)
+                syntax.push(` tanggal_pembelian >= $${count}`)
                 count++
-              } else if (searchEndDate) {
+              } else if (searchEndDate2) {
                 if (!sql.includes(' WHERE ')) {
                   sql += ' WHERE'
                   sql_count += ' WHERE'
                 }
-                search.push(`${searchEndDate}`)
-                syntax.push(` tanggal_penjualan <= $${count}`)
+                search.push(`${searchEndDate2}`)
+                syntax.push(` tanggal_pembelian <= $${count}`)
                 count++
               }
     
             if (syntax.length > 0) {
                 sql += syntax.join(' AND ')
-                sql += ` ORDER BY tanggal_penjualan DESC`
+                
     
                 sql_count += syntax.join(' AND ')
                 sql_count += ` GROUP BY no_invoice ORDER BY id_barang ASC`
             }
+                sql += ` ORDER BY tanggal_pembelian DESC`
+           
             const { rows } = await db.query(sql,search);
             //console.log('rows',rows)
             //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
             const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
-            //console.log(req.query.noInvoice, noInvoice)
-            const details = await db.query('SELECT dp.*, v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_jual', [noInvoice]);
-            const varian = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang');
-            res.render('penjualan/list', {
-                penjualan: rows,
+            console.log(req.query.noInvoice, 'noInvoice')
+            const detailsb = await db.query('SELECT dp.*, v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_beli', [noInvoice]);
+            const varianb = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang');
+            const gudangb = await db.query('SELECT * FROM gudang ORDER BY id_gudang');
+            const supplierb = await db.query('SELECT * FROM supplier ORDER BY id_supplier');
+            const print2 = await db.query('SELECT dp.*,pe.*,v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN pembelian as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice]);
+            //console.log('print', print.rows[0].no_invoice)
+            res.render('pembelian/list', {
+                pembelian: rows,
                 moment,
                 currencyFormatter,
-                detailsj: details.rows,
-                varian: varian.rows,
+                gudangb: gudangb.rows,
+                supplierb: supplierb.rows,
+                detailsb: detailsb.rows,
+                varianb: varianb.rows,
+                print2,
                 query: req.query
             })
         } catch (e) {
@@ -78,8 +87,8 @@ module.exports = function (db) {
     //v
     router.post('/create', async function (req, res, next) {
         try {
-            const { rows } = await db.query('INSERT INTO penjualan(total_harga_jual) VALUES(0) returning *')
-            //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
+            const { rows } = await db.query('INSERT INTO pembelian(total_harga_beli) VALUES(0) returning *')
+            //res.redirect(`/pembelian/show/${rows[0].no_invoice}`)
             res.json(rows[0])
         } catch (e) {
             res.send(e)
@@ -99,8 +108,8 @@ module.exports = function (db) {
     //v
     router.post('/additem', async function (req, res, next) {
         try {
-            detail = await db.query('INSERT INTO penjualan_detail(no_invoice, id_varian, qty)VALUES ($1, $2, $3) returning *', [req.body.no_invoice, req.body.id_varian, req.body.qty])
-            const { rows } = await db.query('SELECT * FROM penjualan WHERE no_invoice = $1', [req.body.no_invoice])
+            detail = await db.query('INSERT INTO pembelian_detail(no_invoice, id_varian, qty)VALUES ($1, $2, $3) returning *', [req.body.no_invoice, req.body.id_varian, req.body.qty])
+            const { rows } = await db.query('SELECT * FROM pembelian WHERE no_invoice = $1', [req.body.no_invoice])
             res.json(rows[0])
         } catch (e) {
             res.send(e)
@@ -109,9 +118,9 @@ module.exports = function (db) {
     //v
     router.post('/upjual', async function (req, res, next) {
         try {
-            detail = await db.query('UPDATE penjualan SET total_bayar_jual = $1, kembalian_jual = $2 WHERE no_invoice = $3', [req.body.total_bayar_jual, req.body.kembalian, req.body.no_invoice])
-
-            //res.json(rows[0])
+            udatejual = await db.query('UPDATE pembelian SET id_gudang = $1, id_supplier = $2, total_harga_beli = $3, total_bayar_beli = $4, kembalian_beli = $5 WHERE no_invoice = $6 returning *', [req.body.gudangb, req.body.supplierb, req.body.total_harga_beli, req.body.total_bayar_beli, req.body.kembalian, req.body.no_invoice])
+            const { rows } = await db.query('SELECT * FROM pembelian WHERE no_invoice = $1', [req.body.no_invoice])
+            res.json(rows)
         } catch (e) {
             res.send(e)
         }
@@ -119,7 +128,7 @@ module.exports = function (db) {
     //v
     router.get('/details/:no_invoice', async function (req, res, next) {
         try {
-            const { rows } = await db.query('SELECT dp.*, v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_jual', [req.params.no_invoice]);
+            const { rows } = await db.query('SELECT dp.*, v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_beli', [req.params.no_invoice]);
             res.json(rows)
         } catch (e) {
             res.send(e)
@@ -128,15 +137,22 @@ module.exports = function (db) {
 
     router.get('/delete/:no_invoice', async function (req, res, next) {
         try {
-            const { rows } = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
-            //console.log('data', rows)
-            //console.log(rows)
-            //detail = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
-            res.redirect('/penjualan')
-            //res.redirect('/penjualan')
+            const { rows } = await db.query('DELETE FROM pembelian WHERE no_invoice = $1', [req.params.no_invoice])
+            delPen = await db.query('DELETE FROM pembelian_detail WHERE no_invoice = $1', [req.params.no_invoice])
+            res.redirect('/pembelian')
         } catch (e) {
             console.log(e)
             res.render(e)
+        }
+    })
+
+    router.delete('/delitem/:id_detail_beli', async function (req, res, next) {
+        try {
+            delDetail = await db.query('DELETE FROM pembelian_detail WHERE id_detail_beli = $1', [req.params.id_detail_beli])
+            const { rows } = await db.query('SELECT SUM(total_harga_detail_beli)  AS total FROM pembelian_detail WHERE no_invoice = $1', [req.body.no_invoice])
+            res.json(rows)
+        } catch (e) {
+            console.log(e)
         }
     })
 

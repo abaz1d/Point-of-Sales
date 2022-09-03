@@ -271,7 +271,7 @@
                                                                                             Barang </a>
                                                                                         <a style="margin: 5px;"
                                                                                             href="/barang/addvarian"
-                                                                                            class="btn btn-warning"><i
+                                                                                            class="btn btn-primary"><i
                                                                                                 class="fa-solid fa-plus"></i> Tambah
                                                                                             Varian </a>
                                                                                     </div>
@@ -582,23 +582,543 @@
                     </div>
                     <div class="tab-pane" id="pembelian" role="tabpanel">
                         <p class="mb-0">
-                            Etsy mixtape wayfarers, ethical wes anderson tofu before they
-                            sold out mcsweeney's organic lomo retro fanny pack lo-fi
-                            farm-to-table readymade. Messenger bag gentrify pitchfork
-                            tattooed craft beer, iphone skateboard locavore carles etsy
-                            salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
-                            Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
-                            mi whatever gluten yr.
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <!-- ==================Searching = -->
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">Pencarian Data</h4>
+                                            <div class="row">
+                                                <form id="form-search2">
+                                                    <input type="hidden" name="page" value="1">
+                                                    <div class="row mb-3">
+                                                        <label for="cari_inv2" class="col-sm-4 col-form-label">Invoice Pembelian</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="cari_inv2" name="cari_inv2" placeholder="Tulis Invoice" value="<%=query.cari_inv2%>"> </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for="searchDate2" class="col-sm-4 col-form-label" id="searchDate2"
+                                                            name="searchDate2" for="searchDate2">Date</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="date" id="searchStartDate2" name="searchStartDate2" value="<%=query.searchStartDate2%>"
+                                                                class="form-control" placeholder="Tulis Date">
+                                                            <label class="col-sm-4 col-form-label">to</label>
+                                                            <input type="date" id="searchEndDate2" name="searchEndDate2" value="<%=query.searchEndDate2%>"
+                                                                class="form-control" placeholder="Tulis Date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <div class="text-sm-left">
+                                                                    <button type="submit" class="btn btn-primary">Cari</button> 
+                                                                    <a href="/utama" class="btn btn-warning">Reset</a> 
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <ul class="pagination pagination-rounded justify-content-end">
+                                                                    <a href="/penjualan" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Transaksi Baru</a>
+                                                                        <!-- /.modal -->
+                                                                </ul>
+                                                                </div>
+                                                                <!-- end col-->
+                                                            </div>
+                                                        </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <h4 class="card-title mb-5">Tabel Data pembelian</h4>
+                                                    <table class="table table-condensed table-bordered table-striped">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th class="align-middle">No</th>
+                                                                <th class="align-middle">No. Invoice</th>
+                                                                <th class="align-middle">Tanggal Pembelian</th>
+                                                                <th class="align-middle">Etc.</th>
+                                                                <th class="align-middle">Total Harga</th>
+                                                                <th class="align-middle">Total Bayar</th>
+                                                                <th class="align-middle">Kembalian</th>
+                                                                <th class="align-middle">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="invoice-tabel2">
+                                                            <% pembelian.forEach((item, index)=> { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= index + 1 %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="/pembelian?noInvoice=<%= item.no_invoice %>">
+                                                                            <%= item.no_invoice %>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= moment(item.tanggal_pembelian).format('DD MMM YYYY HH:SS')%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <table>
+                                                                            <tr>
+                                                                              <td class="border-bottom border-dark"><i class="fa-solid fa-warehouse"></i> | <%=item.id_gudang%></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                              <td class="border-top border-dark"><i class="fa-solid fa-truck"></i> |  <%=item.id_supplier%></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.total_harga_beli) %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.total_bayar_beli) %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.kembalian_beli) %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="d-flex gap-3"> 
+                                                                            <a href="/penjualan" class="text-success"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <% }) %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <h4 class="card-title mb-5">
+                                                         Tabel Detail Pembelian <a href="#" class="text-danger">
+                                                        <%=query.noInvoice%>
+                                                    </a></h4>
+                                                    <table class="table align-middle table-nowrap table-bordered">
+                                                        <thead class="table-light">
+                                                            <tr class="info">
+                                                                <th class="align-middle">No</th>
+                                                                <th class="align-middle">ID Varian</th>
+                                                                <th class="align-middle">Nama Varian</th>
+                                                                <th class="align-middle">QTY</th>
+                                                                <th class="align-middle">Harga</th>
+                                                                <th class="align-middle">Total Harga</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <% detailsb.forEach((item, index)=> { %>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%=index + 1%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%=item.id_varian%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%=item.nama_varian%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%=item.qty%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.harga_detail_beli) %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.total_harga_detail_beli) %>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <% }) %>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="display: none;">
+                                        <div class="col-12" id="printTable2">
+                                            <table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: transparent; margin: 0;">
+                                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                    <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+                                                    <td class="container" width="600" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
+                                                        <div class="content" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+                                                            <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px;  margin: 0; border: none;">
+                                                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                    <td class="content-wrap aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;padding: 20px; color: #495057; border: 2px solid #1d1e3a;border-radius: 7px; background-color: #fff;" align="center" valign="top">
+                                                                        <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                                                                    <h2 class="aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 24px; color: #000; line-height: 1.2em; font-weight: 400; text-align: center; margin: 40px 0 0;" align="center">Thanks for using <b style="font-weight: 600; text-transform: uppercase;">TOKO</b>.</h2>
+                                                                                    
+                                                                                    <h3 class="aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 18px; color: #000; line-height: 1.2em; font-weight: 200; text-align: center; margin: 40px 0 0;" align="center"> <%=query.noInvoice !=undefined ? print2.rows[0].no_invoice : '' %> <br> <%=query.noInvoice !=undefined ? moment(print2.rows[0].tanggal_pembelian).format('DD MMM YYYY HH:mm:ss') : ''%> </h3>
+                                                                                    
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                <td class="content-block aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
+                                                                                    <table class="invoice" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 80%; margin: 40px auto;">
+                                                                                    
+                                                                                        <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                            <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">
+                                                                                                <table class="invoice-items" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0;">
+                                                                                                    <% print2.rows.forEach((item, index)=> { %>
+                                                                                                        <tbody>
+                                                                                                            <tr>
+                                                                                                                <td style="font-size: medium;">
+                                                                                                                    <%=item.nama_varian%>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                            
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <%= currencyFormatter.format(item.harga_detail_beli) %> X <%=item.qty%>
+                                                                                                                </td>
+                                                                                                                <td>
+                            
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <%= currencyFormatter.format(item.total_harga_detail_beli) %>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <% }) %>
+                                                                                                            <tr class="total" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"></td>
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top">TOTAL</td>
+                                                                                                                <td class="alignright" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 18px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"><%= query.noInvoice !=undefined ? currencyFormatter.format(print2.rows[0].total_harga_beli) : ''%></td>
+                                                                                                            </tr>
+                                                                                                            <tr class="total" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"></td>
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top">BAYAR</td>
+                                                                                                                <td class="alignright" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"><%= query.noInvoice !=undefined ? currencyFormatter.format(print2.rows[0].total_bayar_beli) : ''%></td>
+                                                                                                            </tr>
+                                                                                                            <tr class="total" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"></td>
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top">KEMBALI</td>
+                                                                                                                <td class="alignright" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"><%= query.noInvoice !=undefined ? currencyFormatter.format(print2.rows[0].kembalian_beli) : ''%></td>
+                                                                                                            </tr>
+                                                                                                        </tbody>
+                                                                                                        
+                                                                                                </table>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                <td class="content-block aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
+                                                                                    Jl. H. Mahdi II No.123, Cisaranten Wetan, Kec. Cinambo, <br> Kota Bandung, Jawa Barat 40293
+                                                                                </td>
+                                                                            </tr>
+                            
+                                                                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                <td class="content-block" style="text-align: center;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0;" valign="top">
+                                                                                    <script>document.write(new Date().getFullYear())</script> © RubiCAMP.
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- end table -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    //let no_invoice = null;
+                                    
+                                    function printData(){
+                                            var divToPrint=document.getElementById("printTable2");
+                                            newWin= window.open("");
+                                            newWin.document.write(divToPrint.outerHTML);
+                                            newWin.print();
+                                            newWin.close();
+                                    }
+                                
+                                    // $('#print-button').on('click',function(){
+                                    // printData();
+                                    // })
+                                
+                                    $('#invoice-tabel2').on('click', '.text-primary', function () {
+                                        printData();
+                                    })
+                                
+                                </script>
                         </p>
                     </div>
                     <div class="tab-pane" id="penjualan" role="tabpanel">
                         <p class="mb-0">
-                            Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
-                            art party before they sold out master cleanse gluten-free squid
-                            scenester freegan cosby sweater. Fanny pack portland seitan DIY,
-                            art party locavore wolf cliche high life echo park Austin. Cred
-                            vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
-                            farm-to-table VHS.
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <!-- ==================Searching = -->
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">Pencarian Data</h4>
+                                            <div class="row">
+                                                <form id="form-search">
+                                                    <input type="hidden" name="page" value="1">
+                                                    <div class="row mb-3">
+                                                        <label for="cari_inv" class="col-sm-4 col-form-label">Invoice Penjualan</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="cari_inv" name="cari_inv" placeholder="Tulis Invoice" value="<%=query.cari_inv%>"> </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for="searchDate" class="col-sm-4 col-form-label" id="searchDate"
+                                                            name="searchDate" for="searchDate">Date</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="date" id="searchStartDate" name="searchStartDate"
+                                                                class="form-control" placeholder="Tulis Date" value="<%=query.searchStartDate%>">
+                                                            <label class="col-sm-4 col-form-label">to</label>
+                                                            <input type="date" id="searchEndDate" name="searchEndDate"
+                                                                class="form-control" placeholder="Tulis Date" value="<%=query.searchEndDate%>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <div class="text-sm-left">
+                                                                    <button type="submit" class="btn btn-primary">Cari</button> 
+                                                                    <a href="/utama" class="btn btn-warning">Reset</a> 
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <ul class="pagination pagination-rounded justify-content-end">
+                                                                    <a href="/penjualan" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Transaksi Baru</a>
+                                                                        <!-- /.modal -->
+                                                                </ul>
+                                                                </div>
+                                                                <!-- end col-->
+                                                            </div>
+                                                        </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <h4 class="card-title mb-5">Tabel Data Penjualan</h4>
+                                                    <table class="table table-condensed table-bordered table-striped">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th class="align-middle">No</th>
+                                                                <th class="align-middle">No. Invoice</th>
+                                                                <th class="align-middle">Tanggal Penjualan</th>
+                                                                <th class="align-middle">Total Harga</th>
+                                                                <th class="align-middle">Total Bayar</th>
+                                                                <th class="align-middle">Kembalian</th>
+                                                                <th class="align-middle">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="invoice-tabel">
+                                                            <% penjualan.forEach((item, index)=> { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= index + 1 %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="/utama?noInvoice=<%= item.no_invoice %>">
+                                                                            <%= item.no_invoice %>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= moment(item.tanggal_penjualan).format('DD MMM YYYY HH:SS')
+                                                                        %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.total_harga_jual) %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.total_bayar_jual) %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.kembalian_jual) %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="d-flex gap-3"> 
+                                                                            <a href="/penjualan" class="text-success"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <% }) %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <h4 class="card-title mb-5">
+                                                         Tabel Detail Penjualan <a href="#" class="text-danger">
+                                                        <%=query.noInvoice%>
+                                                    </a></h4>
+                                                    <table class="table align-middle table-nowrap table-bordered">
+                                                        <thead class="table-light">
+                                                            <tr class="info">
+                                                                <th class="align-middle">No</th>
+                                                                <th class="align-middle">ID Varian</th>
+                                                                <th class="align-middle">Nama Varian</th>
+                                                                <th class="align-middle">QTY</th>
+                                                                <th class="align-middle">Harga</th>
+                                                                <th class="align-middle">Total Harga</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <% detailsj.forEach((item, index)=> { %>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%=index + 1%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%=item.id_varian%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%=item.nama_varian%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%=item.qty%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.harga_detail_jual) %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= currencyFormatter.format(item.total_harga_detail_jual) %>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <% }) %>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="display: none;">
+                                        <div class="col-12" id="printTable">
+                                            <table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: transparent; margin: 0;">
+                                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                    <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+                                                    <td class="container" width="600" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
+                                                        <div class="content" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+                                                            <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px;  margin: 0; border: none;">
+                                                                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                    <td class="content-wrap aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;padding: 20px; color: #495057; border: 2px solid #1d1e3a;border-radius: 7px; background-color: #fff;" align="center" valign="top">
+                                                                        <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                                                                    <h2 class="aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 24px; color: #000; line-height: 1.2em; font-weight: 400; text-align: center; margin: 40px 0 0;" align="center">Thanks for using <b style="font-weight: 600; text-transform: uppercase;">TOKO</b>.</h2>
+                                                                                    
+                                                                                    <h3 class="aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 18px; color: #000; line-height: 1.2em; font-weight: 200; text-align: center; margin: 40px 0 0;" align="center"> <%=query.noInvoice !=undefined ? print.rows[0].no_invoice : '' %> <br> <%=query.noInvoice !=undefined ? moment(print.rows[0].tanggal_penjualan).format('DD MMM YYYY HH:mm:ss') : ''%> </h3>
+                                                                                    
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                <td class="content-block aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
+                                                                                    <table class="invoice" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 80%; margin: 40px auto;">
+                                                                                    
+                                                                                        <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                            <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">
+                                                                                                <table class="invoice-items" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0;">
+                                                                                                    <% print.rows.forEach((item, index)=> { %>
+                                                                                                        <tbody>
+                                                                                                            <tr>
+                                                                                                                <td style="font-size: medium;">
+                                                                                                                    <%=item.nama_varian%>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+            
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <%= currencyFormatter.format(item.harga_detail_jual) %> X <%=item.qty%>
+                                                                                                                </td>
+                                                                                                                <td>
+            
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <%= currencyFormatter.format(item.total_harga_detail_jual) %>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <% }) %>
+                                                                                                            <tr class="total" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"></td>
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top">TOTAL</td>
+                                                                                                                <td class="alignright" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 18px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"><%= query.noInvoice !=undefined ? currencyFormatter.format(print.rows[0].total_harga_jual) : ''%></td>
+                                                                                                            </tr>
+                                                                                                            <tr class="total" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"></td>
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top">BAYAR</td>
+                                                                                                                <td class="alignright" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"><%= query.noInvoice !=undefined ? currencyFormatter.format(print.rows[0].total_bayar_jual) : ''%></td>
+                                                                                                            </tr>
+                                                                                                            <tr class="total" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"></td>
+                                                                                                                <td class="alignright" width="80%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top">KEMBALI</td>
+                                                                                                                <td class="alignright" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top"><%= query.noInvoice !=undefined ? currencyFormatter.format(print.rows[0].kembalian_jual) : ''%></td>
+                                                                                                            </tr>
+                                                                                                        </tbody>
+                                                                                                        
+                                                                                                </table>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                <td class="content-block aligncenter" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
+                                                                                    Jl. H. Mahdi II No.123, Cisaranten Wetan, Kec. Cinambo, <br> Kota Bandung, Jawa Barat 40293
+                                                                                </td>
+                                                                            </tr>
+                    
+                                                                            <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                                                <td class="content-block" style="text-align: center;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0;" valign="top">
+                                                                                    <script>document.write(new Date().getFullYear())</script> © RubiCAMP.
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- end table -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    let no_invoice = '<%= penjualan.no_invoice %>';
+                                    //let no_invoice = null;
+                        
+                                    
+                                    function printData(){
+                                            var divToPrint=document.getElementById("printTable");
+                                            newWin= window.open("");
+                                            newWin.document.write(divToPrint.outerHTML);
+                                            newWin.print();
+                                            newWin.close();
+                                    }
+                        
+                                    // $('#print-button').on('click',function(){
+                                    // printData();
+                                    // })
+                        
+                                    $('#invoice-tabel').on('click', '.text-primary', function () {
+                                        printData();
+                                    })
+                                </script>
                         </p>
                     </div>
                     <div class="tab-pane" id="satuan" role="tabpanel">
@@ -1052,6 +1572,12 @@
             </div>
         </footer>
     </div>
+    <script>
+        $('#beli-form').submit(function (e) {
+                    e.preventDefault();
+				
+        })
+    </script>
     <!-- end main content-->
 
 
