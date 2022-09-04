@@ -28,7 +28,7 @@
                                 <div class="row">
                                     <div class="col-7">
                                         <div class="text-primary p-3">
-                                            <h5 class="text-primary">Halo, Henry Price</h5>
+                                            <h5 class="text-primary">Halo, <%= user.username.toUpperCase() %></h5>
                                             <p>Selamat Datang Kembali</p>
                                         </div>
                                     </div>
@@ -44,8 +44,8 @@
                                             <img src="/assets/images/users/avatar-1.jpg" alt=""
                                                 class="img-thumbnail rounded-circle">
                                         </div>
-                                        <h5 class="font-size-15 text-truncate">Henry Price</h5>
-                                        <p class="text-muted mb-0 text-truncate">ADMIN/OPERATOR</p>
+                                        <h5 class="font-size-15 text-truncate"><%= user.username %></h5>
+                                        <p class="text-muted mb-0 text-truncate"><%= user.role.toUpperCase() %></p>
                                     </div>
 
                                     <div class="col-sm-8">

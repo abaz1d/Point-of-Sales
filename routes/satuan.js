@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var moment = require('moment')
+const { isLoggedIn } = require('../helpers/util')
 
 /* GET home page. */
 module.exports = function (db) {
 
-  router.get('/', async function (req, res, next) {
+  router.get('/', isLoggedIn, async function (req, res, next) {
     try {
     let wheres = []
     let values = []
@@ -40,7 +41,7 @@ module.exports = function (db) {
     }
   });
 
-  router.get('/add', async function (req, res, next) {
+  router.get('/add', isLoggedIn, async function (req, res, next) {
     try {
       res.render('satuan/add')
     } catch (e) {
@@ -58,7 +59,7 @@ module.exports = function (db) {
     }
   });
 
-  router.get('/edit/:id', async function (req, res, next) {
+  router.get('/edit/:id', isLoggedIn, async function (req, res, next) {
     try {
       const { rows } = await db.query('SELECT * FROM satuan WHERE id_satuan = $1', [req.params.id])
       res.render('satuan/edit', { item: rows[0] });
@@ -80,7 +81,7 @@ module.exports = function (db) {
     }
   });
 
-  router.get('/delete/:id', async function (req, res, next) {
+  router.get('/delete/:id', isLoggedIn, async function (req, res, next) {
     try {
       const { rows } = await db.query('DELETE FROM satuan WHERE id_satuan = $1', [req.params.id])
       res.redirect('/satuan')

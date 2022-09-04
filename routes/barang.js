@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 var path = require('path');
-// const {} = require('../')
+const { isLoggedIn } = require('../helpers/util')
 
 module.exports = function (db) {
 
-    router.get('/', function (req, res) {
+    router.get('/', isLoggedIn, function (req, res) {
         const { cari_id, cari_nama } = req.query
         let search = []
         let count = 1
@@ -55,7 +55,7 @@ module.exports = function (db) {
         })
     })
 
-    router.get('/addvarian', function (req, res) {
+    router.get('/addvarian', isLoggedIn, function (req, res) {
         db.query('SELECT * FROM barang', (err, rowsB) => {
             if (err) console.log(err)
             db.query('SELECT * FROM satuan', (err, rowsS) => {
@@ -101,7 +101,7 @@ module.exports = function (db) {
 
     })
 
-    router.get('/editvar/:id', (req, res) => {
+    router.get('/editvar/:id', isLoggedIn, (req, res) => {
         db.query('SELECT * FROM barang', (err, rowsB) => {
             if (err) console.log(err)
             db.query('SELECT * FROM satuan', (err, rowsS) => {
@@ -183,7 +183,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
         }
     })
 
-    router.get('/deletevar/:id', (req, res) => {
+    router.get('/deletevar/:id', isLoggedIn, (req, res) => {
 
         db.query('DELETE FROM varian WHERE id_varian = $1', [req.params.id], (err) => {
             if (err) {
@@ -193,7 +193,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
         })
     })
     //=====================================================
-    router.get('/addbarang', function (req, res) {
+    router.get('/addbarang', isLoggedIn, function (req, res) {
         res.render('barang/addbarang', { currentDir: 'settingdata', current: 'barang' });
     })
 
@@ -207,7 +207,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
         })
     })
 
-    router.get('/editbar/:id', (req, res) => {
+    router.get('/editbar/:id', isLoggedIn, (req, res) => {
 
         db.query('SELECT * FROM barang WHERE id_barang = $1', [req.params.id], (err, rows) => {
 
@@ -229,7 +229,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
         })
     })
 
-    router.get('/deletebar/:id', (req, res) => {
+    router.get('/deletebar/:id', isLoggedIn, (req, res) => {
 
         db.query('DELETE FROM barang WHERE id_barang = $1', [req.params.id], (err) => {
             if (err) {

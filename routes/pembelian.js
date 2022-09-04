@@ -3,9 +3,10 @@ var router = express.Router();
 var moment = require('moment');
 var path = require('path');
 const { currencyFormatter } = require('../helpers/util')
+const { isLoggedIn } = require('../helpers/util')
 
 module.exports = function (db) {
-    router.get('/', async function (req, res, next) {
+    router.get('/', isLoggedIn, async function (req, res, next) {
         try {
             const { cari_inv2, searchStartDate2, searchEndDate2 } = req.query
             let search = []
@@ -97,7 +98,7 @@ module.exports = function (db) {
     //v
 
     //v
-    router.get('/barang/:id_varian', async function (req, res, next) {
+    router.get('/barang/:id_varian', isLoggedIn, async function (req, res, next) {
         try {
             const { rows } = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang WHERE id_varian = $1 ORDER BY var.id_barang', [req.params.id_varian])
             res.json(rows[0])
@@ -126,7 +127,7 @@ module.exports = function (db) {
         }
     });
     //v
-    router.get('/details/:no_invoice', async function (req, res, next) {
+    router.get('/details/:no_invoice', isLoggedIn, async function (req, res, next) {
         try {
             const { rows } = await db.query('SELECT dp.*, v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_beli', [req.params.no_invoice]);
             res.json(rows)
@@ -135,7 +136,7 @@ module.exports = function (db) {
         }
     });
 
-    router.get('/delete/:no_invoice', async function (req, res, next) {
+    router.get('/delete/:no_invoice', isLoggedIn, async function (req, res, next) {
         try {
             const { rows } = await db.query('DELETE FROM pembelian WHERE no_invoice = $1', [req.params.no_invoice])
             delPen = await db.query('DELETE FROM pembelian_detail WHERE no_invoice = $1', [req.params.no_invoice])
@@ -146,7 +147,7 @@ module.exports = function (db) {
         }
     })
 
-    router.delete('/delitem/:id_detail_beli', async function (req, res, next) {
+    router.delete('/delitem/:id_detail_beli', isLoggedIn, async function (req, res, next) {
         try {
             delDetail = await db.query('DELETE FROM pembelian_detail WHERE id_detail_beli = $1', [req.params.id_detail_beli])
             const { rows } = await db.query('SELECT SUM(total_harga_detail_beli)  AS total FROM pembelian_detail WHERE no_invoice = $1', [req.body.no_invoice])

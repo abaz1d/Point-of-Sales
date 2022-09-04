@@ -1,22 +1,50 @@
 var express = require('express');
-const gudang = require('./gudang');
-const satuan = require('./satuan');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 var router = express.Router();
 var moment = require('moment');
 var path = require('path');
 const { currencyFormatter } = require('../helpers/util')
+const { isLoggedIn } = require('../helpers/util')
 
 /* GET home page. */
 module.exports = function (db) {
-  router.get('/', function (req, res, next) {
-    res.render('login');
+  router.get('/', function (req, res) {
+    res.render('login',{
+      info: req.flash('info')
+    });
   });
 
-  router.post('/login', function (req, res, next) {
-    res.redirect('/utama');
+  router.post('/', function (req, res) {
+    const { email_user, password } = req.body
+    db.query('SELECT * FROM users WHERE email_user = $1', [email_user], (err, data) => {
+      if (err) return res.send(err)
+
+      if (data.rows.length == 0) {
+        req.flash('info', 'Email Tidak Terdaftar')
+        return res.redirect('/');
+      }
+
+      bcrypt.compare(password, data.rows[0].password, function (err, result) {
+        if (err) return res.send(err)
+
+        if (!result) {
+          req.flash('info', 'Password Salah')
+          return res.redirect('/');
+        }
+        req.session.user = data.rows[0]
+        res.redirect('/utama');
+      });
+    })
   });
 
-  router.get('/utama', function (req, res, next) {
+  router.get('/logout', function (req, res) {
+    req.session.destroy(function (err) {
+      res.redirect('/')
+    })
+  });
+
+  router.get('/utama', isLoggedIn, function (req, res) {
     const { cari_id, cari_nama } = req.query
     let searchb = []
     let countb = 1
@@ -314,7 +342,8 @@ module.exports = function (db) {
                                       varianju: varianju.rows,
                                       print,
                                       print2,
-                                      query: req.query
+                                      query: req.query,
+                                      user: req.session.user
                                     })
                                   })
                                 })
@@ -332,14 +361,6 @@ module.exports = function (db) {
         })
       })
     })
-  });
-
-  router.post('/register', function (req, res, next) {
-    res.render('register');
-  });
-
-  router.get('/logout', function (req, res, next) {
-    res.redirect('/')
   });
 
   return router;
