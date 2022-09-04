@@ -32,12 +32,12 @@ module.exports = function (db) {
 
         if (syntax.length > 0) {
             sql += syntax.join(' AND ')
-            
+
 
             sql_count += syntax.join(' AND ')
             sql_count += ` GROUP BY id_barang ORDER BY id_barang ASC`
         }
-            sql += ` ORDER BY id_barang ASC`
+        sql += ` ORDER BY id_barang ASC`
         db.query(sql, search, (err, barang) => {
             if (err) console.log(err)
             console.log('sql', sql)
@@ -46,12 +46,18 @@ module.exports = function (db) {
 
             db.query('SELECT dp.*, b.nama_barang FROM varian as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.id_barang = $1 ORDER BY dp.id_varian ASC', [id_barang], (err, varian) => {
                 if (err) console.log(err)
-                res.render('barang/list', {
-                    varian: varian.rows,
-                    rows: barang.rows,
-                    query: req.query,
-                    user: req.session.user
-                });
+                db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`, (err, totaljual) => {
+                    db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`, (err, totalbeli) => {
+                        res.render('barang/list', {
+                            varian: varian.rows,
+                            rows: barang.rows,
+                            query: req.query,
+                            totaljual: totaljual.rows[0].totaljual,
+                            totalbeli: totalbeli.rows[0].totalbeli,
+                            user: req.session.user
+                        });
+                    })
+                })
             })
         })
     })
@@ -146,13 +152,13 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
         let uploadPath;
         if (!req.files || Object.keys(req.files).length === 0) {
             console.log('gambar lama')
-            db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9`, 
-            [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, req.body.saved_gambar, req.body.harga_jual, req.params.id], (err) => {
-                if (err) {
-                    return console.error(err.message);
-                }
-                res.redirect('/barang')
-            })
+            db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9`,
+                [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, req.body.saved_gambar, req.body.harga_jual, req.params.id], (err) => {
+                    if (err) {
+                        return console.error(err.message);
+                    }
+                    res.redirect('/barang')
+                })
         } else {
             console.log('gambar baru')
             // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
@@ -165,21 +171,21 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
                     return res.status(500).send(err);
                 //  const {id_varian, nama, barang, stok, harga, satuan, gudang } = req.body
 
-                db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9`, 
-                [req.body.nama_varian, 
-                    req.body.kategori_barang, 
-                    req.body.stok_varian, 
-                    req.body.harga_beli, 
-                    req.body.satuan_varian, 
-                    req.body.gudang, 
-                    filename, 
-                    req.body.harga_jual, 
+                db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9`,
+                    [req.body.nama_varian,
+                    req.body.kategori_barang,
+                    req.body.stok_varian,
+                    req.body.harga_beli,
+                    req.body.satuan_varian,
+                    req.body.gudang,
+                        filename,
+                    req.body.harga_jual,
                     req.params.id], (err) => {
-                    if (err) {
-                        return console.error(err.message);
-                    }
-                    res.redirect('/barang')
-                })
+                        if (err) {
+                            return console.error(err.message);
+                        }
+                        res.redirect('/barang')
+                    })
             })
         }
     })

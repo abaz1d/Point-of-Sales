@@ -10,7 +10,7 @@ const { isLoggedIn } = require('../helpers/util')
 /* GET home page. */
 module.exports = function (db) {
   router.get('/', function (req, res) {
-    res.render('login',{
+    res.render('login', {
       info: req.flash('info')
     });
   });
@@ -33,12 +33,12 @@ module.exports = function (db) {
           return res.redirect('/');
         }
         req.session.user = data.rows[0]
-        if (req.session.user.role == 'Admin'){
+        if (req.session.user.role == 'Admin') {
           res.redirect('/utama');
         } else {
           res.redirect('/penjualan');
         }
-        
+
       });
     })
   });
@@ -87,6 +87,8 @@ module.exports = function (db) {
 
       db.query('SELECT dp.*, b.nama_barang FROM varian as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.id_barang = $1 ORDER BY dp.id_varian ASC', [id_barang], (err, varian) => {
         if (err) console.log(err)
+
+        //----------------------------------------------------------------------------vGudang        
         let wheresg = []
         let valuesg = []
         let countg = 1
@@ -115,7 +117,7 @@ module.exports = function (db) {
 
 
         db.query(sqlg, valuesg, (err, gudang) => {
-
+          //----------------------------------------------------------------------------vSatuan
           let swheres = []
           let svalues = []
           let scount = 1
@@ -138,7 +140,7 @@ module.exports = function (db) {
           sqls += ' ORDER BY id_satuan'
 
           db.query(sqls, svalues, (err, satuan) => {
-
+            //----------------------------------------------------------------------------vUsers
             let supwheres = []
             let supvalues = []
             let supcount = 1
@@ -208,6 +210,7 @@ module.exports = function (db) {
 
               db.query(usql, uvalues, (err, users) => {
 
+                //----------------------------------------------------------------------------vPenjualan
                 const { cari_inv, searchStartDate, searchEndDate } = req.query
                 let searchju = []
                 let countju = 1
@@ -264,91 +267,109 @@ module.exports = function (db) {
                     db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang', (err, varianju) => {
                       db.query('SELECT dp.*,pe.*,v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN penjualan as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice], (err, print) => {
                         //console.log('print', print.rows[0].no_invoice)
+                        db.query('SELECT sum(total_harga_jual) AS uangmasuk FROM penjualan', (err, uangMasuk) => {
 
-                        const { cari_inv2, searchblStartDate2, searchblEndDate2 } = req.query
-                        let searchbl = []
-                        let countbl = 1
-                        let syntaxbl = []
-                        let sqlbl_countbl = 'SELECT countbl(*) AS total FROM barang'
-                        let sqlbl = 'SELECT * FROM pembelian'
-                        if (cari_inv2) {
-                          sqlbl += ' WHERE '
-                          sqlbl_countbl += ' WHERE '
-                          searchbl.push(`%${cari_inv2}%`)
-                          syntaxbl.push(`no_invoice ilike '%' || $${countbl++} || '%'`)
-                          countbl++
-                        }
-                        if (searchblStartDate2 && searchblEndDate2) {
-                          if (!sqlbl.includes(' WHERE ')) {
-                            sqlbl += ' WHERE'
-                            sqlbl_countbl += ' WHERE'
+
+                          //----------------------------------------------------------------------------vPembelian
+                          const { cari_inv2, searchblStartDate2, searchblEndDate2 } = req.query
+                          let searchbl = []
+                          let countbl = 1
+                          let syntaxbl = []
+                          let sqlbl_countbl = 'SELECT countbl(*) AS total FROM barang'
+                          let sqlbl = 'SELECT * FROM pembelian'
+                          if (cari_inv2) {
+                            sqlbl += ' WHERE '
+                            sqlbl_countbl += ' WHERE '
+                            searchbl.push(`%${cari_inv2}%`)
+                            syntaxbl.push(`no_invoice ilike '%' || $${countbl++} || '%'`)
+                            countbl++
                           }
-                          searchbl.push(`${searchblStartDate2}`)
-                          searchbl.push(`${searchblEndDate2}`)
-                          syntaxbl.push(` tanggal_pembelian >= $${countbl} AND tanggal_pembelian < $${countbl + 1}`)
-                          countbl++
-                          countbl++
-                        } else if (searchblStartDate2) {
-                          if (!sqlbl.includes(' WHERE ')) {
-                            sqlbl += ' WHERE'
-                            sqlbl_countbl += ' WHERE'
+                          if (searchblStartDate2 && searchblEndDate2) {
+                            if (!sqlbl.includes(' WHERE ')) {
+                              sqlbl += ' WHERE'
+                              sqlbl_countbl += ' WHERE'
+                            }
+                            searchbl.push(`${searchblStartDate2}`)
+                            searchbl.push(`${searchblEndDate2}`)
+                            syntaxbl.push(` tanggal_pembelian >= $${countbl} AND tanggal_pembelian < $${countbl + 1}`)
+                            countbl++
+                            countbl++
+                          } else if (searchblStartDate2) {
+                            if (!sqlbl.includes(' WHERE ')) {
+                              sqlbl += ' WHERE'
+                              sqlbl_countbl += ' WHERE'
+                            }
+                            searchbl.push(`${searchblStartDate2}`)
+                            syntaxbl.push(` tanggal_pembelian >= $${countbl}`)
+                            countbl++
+                          } else if (searchblEndDate2) {
+                            if (!sqlbl.includes(' WHERE ')) {
+                              sqlbl += ' WHERE'
+                              sqlbl_countbl += ' WHERE'
+                            }
+                            searchbl.push(`${searchblEndDate2}`)
+                            syntaxbl.push(` tanggal_pembelian <= $${countbl}`)
+                            countbl++
                           }
-                          searchbl.push(`${searchblStartDate2}`)
-                          syntaxbl.push(` tanggal_pembelian >= $${countbl}`)
-                          countbl++
-                        } else if (searchblEndDate2) {
-                          if (!sqlbl.includes(' WHERE ')) {
-                            sqlbl += ' WHERE'
-                            sqlbl_countbl += ' WHERE'
+
+                          if (syntaxbl.length > 0) {
+                            sqlbl += syntaxbl.join(' AND ')
+
+
+                            sqlbl_countbl += syntaxbl.join(' AND ')
+                            sqlbl_countbl += ` GROUP BY no_invoice ORDER BY id_barang ASC`
                           }
-                          searchbl.push(`${searchblEndDate2}`)
-                          syntaxbl.push(` tanggal_pembelian <= $${countbl}`)
-                          countbl++
-                        }
+                          sqlbl += ` ORDER BY tanggal_pembelian DESC`
 
-                        if (syntaxbl.length > 0) {
-                          sqlbl += syntaxbl.join(' AND ')
+                          db.query(sqlbl, searchbl, (err, pembelian) => {
+                            //console.log('rows',rows)
+                            //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
+                            const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
 
+                            db.query('SELECT dp.*, v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_beli', [noInvoice], (err, detailsb) => {
+                              db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang', (err, varianb) => {
+                                db.query('SELECT * FROM gudang ORDER BY id_gudang', (err, gudangb) => {
+                                  db.query('SELECT * FROM supplier ORDER BY id_supplier', (err, supplierb) => {
+                                    db.query('SELECT dp.*,pe.*,v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN pembelian as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice], (err, print2) => {
+                                      db.query('SELECT sum(total_harga_beli) AS uangkeluar FROM pembelian', (err, uangKeluar) => {
+                                        //console.log('uangKeluar', uangKeluar.rows[0].uangkeluar)
+                                        db.query('SELECT sum(jd.qty * (var.harga_jual_varian - var.harga_beli_varian)) AS profit FROM penjualan_detail jd LEFT JOIN varian var ON var.id_varian = jd.id_varian', (err, profit) => {
+                                          //console.log('profit', profit.rows[0].profit)
+                                          db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`, (err, totaljual) => {
+                                            db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`, (err, totalbeli) => {
 
-                          sqlbl_countbl += syntaxbl.join(' AND ')
-                          sqlbl_countbl += ` GROUP BY no_invoice ORDER BY id_barang ASC`
-                        }
-                        sqlbl += ` ORDER BY tanggal_pembelian DESC`
-
-                        db.query(sqlbl, searchbl, (err, pembelian) => {
-                          //console.log('rows',rows)
-                          //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
-                          const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
-
-                          db.query('SELECT dp.*, v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_beli', [noInvoice], (err, detailsb) => {
-                            db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang', (err, varianb) => {
-                              db.query('SELECT * FROM gudang ORDER BY id_gudang', (err, gudangb) => {
-                                db.query('SELECT * FROM supplier ORDER BY id_supplier', (err, supplierb) => {
-                                  db.query('SELECT dp.*,pe.*,v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN pembelian as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice], (err, print2) => {
-                                    //console.log('print', print.rows[0].no_invoice)
-
-                                    res.render('utama', {
-                                      varian: varian.rows,
-                                      barang: barang.rows,
-                                      gudang: gudang.rows,
-                                      gudangb: gudangb.rows,
-                                      penjualan: penjualan.rows,
-                                      pembelian: pembelian.rows,
-                                      satuan: satuan.rows,
-                                      supplierb: supplierb.rows,
-                                      supplier: supplier.rows,
-                                      users: users.rows,
-                                      moment,
-                                      currencyFormatter,
-                                      detailsj: detailsj.rows,
-                                      detailsb: detailsb.rows,
-                                      varian: varian.rows,
-                                      varianb: varianb.rows,
-                                      varianju: varianju.rows,
-                                      print,
-                                      print2,
-                                      query: req.query,
-                                      user: req.session.user
+                                              res.render('utama', {
+                                                varian: varian.rows,
+                                                barang: barang.rows,
+                                                gudang: gudang.rows,
+                                                gudangb: gudangb.rows,
+                                                penjualan: penjualan.rows,
+                                                pembelian: pembelian.rows,
+                                                satuan: satuan.rows,
+                                                supplierb: supplierb.rows,
+                                                supplier: supplier.rows,
+                                                users: users.rows,
+                                                moment,
+                                                currencyFormatter,
+                                                detailsj: detailsj.rows,
+                                                detailsb: detailsb.rows,
+                                                varian: varian.rows,
+                                                varianb: varianb.rows,
+                                                varianju: varianju.rows,
+                                                print,
+                                                print2,
+                                                profit: profit.rows[0].profit,
+                                                query: req.query,
+                                                uangMasuk: uangMasuk.rows[0].uangmasuk,
+                                                uangKeluar: uangKeluar.rows[0].uangkeluar,
+                                                totaljual: totaljual.rows[0].totaljual,
+                                                totalbeli: totalbeli.rows[0].totalbeli,
+                                                user: req.session.user
+                                              })
+                                            })
+                                          })
+                                        })
+                                      })
                                     })
                                   })
                                 })

@@ -23,42 +23,42 @@ module.exports = function (db) {
             }
             if (searchStartDate2 && searchEndDate2) {
                 if (!sql.includes(' WHERE ')) {
-                  sql += ' WHERE'
-                  sql_count += ' WHERE'
+                    sql += ' WHERE'
+                    sql_count += ' WHERE'
                 }
                 search.push(`${searchStartDate2}`)
                 search.push(`${searchEndDate2}`)
                 syntax.push(` tanggal_pembelian >= $${count} AND tanggal_pembelian < $${count + 1}`)
                 count++
                 count++
-              } else if (searchStartDate2) {
+            } else if (searchStartDate2) {
                 if (!sql.includes(' WHERE ')) {
-                  sql += ' WHERE'
-                  sql_count += ' WHERE'
+                    sql += ' WHERE'
+                    sql_count += ' WHERE'
                 }
                 search.push(`${searchStartDate2}`)
                 syntax.push(` tanggal_pembelian >= $${count}`)
                 count++
-              } else if (searchEndDate2) {
+            } else if (searchEndDate2) {
                 if (!sql.includes(' WHERE ')) {
-                  sql += ' WHERE'
-                  sql_count += ' WHERE'
+                    sql += ' WHERE'
+                    sql_count += ' WHERE'
                 }
                 search.push(`${searchEndDate2}`)
                 syntax.push(` tanggal_pembelian <= $${count}`)
                 count++
-              }
-    
+            }
+
             if (syntax.length > 0) {
                 sql += syntax.join(' AND ')
-                
-    
+
+
                 sql_count += syntax.join(' AND ')
                 sql_count += ` GROUP BY no_invoice ORDER BY id_barang ASC`
             }
-                sql += ` ORDER BY tanggal_pembelian DESC`
-           
-            const { rows } = await db.query(sql,search);
+            sql += ` ORDER BY tanggal_pembelian DESC`
+
+            const { rows } = await db.query(sql, search);
             //console.log('rows',rows)
             //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
             const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
@@ -68,6 +68,8 @@ module.exports = function (db) {
             const gudangb = await db.query('SELECT * FROM gudang ORDER BY id_gudang');
             const supplierb = await db.query('SELECT * FROM supplier ORDER BY id_supplier');
             const print2 = await db.query('SELECT dp.*,pe.*,v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN pembelian as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice]);
+            const totaljual = await db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`)
+            const totalbeli = await db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`)
             //console.log('print', print.rows[0].no_invoice)
             res.render('pembelian/list', {
                 pembelian: rows,
@@ -79,6 +81,8 @@ module.exports = function (db) {
                 varianb: varianb.rows,
                 print2,
                 query: req.query,
+                totaljual: totaljual.rows[0].totaljual,
+                totalbeli: totalbeli.rows[0].totalbeli,
                 user: req.session.user
             })
         } catch (e) {

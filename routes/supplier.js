@@ -46,10 +46,14 @@ module.exports = function (db) {
 
 
             const { rows } = await db.query(sql, values);
+            const totaljual = await db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`)
+            const totalbeli = await db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`)
 
             res.render('supplier/list', {
                 rows,
                 user: req.session.user,
+                totaljual: totaljual.rows[0].totaljual,
+                totalbeli: totalbeli.rows[0].totalbeli,
                 query: req.query
             })
         } catch (e) {
