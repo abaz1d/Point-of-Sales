@@ -49,7 +49,8 @@ module.exports = function (db) {
                 res.render('barang/list', {
                     varian: varian.rows,
                     rows: barang.rows,
-                    query: req.query
+                    query: req.query,
+                    userLogin: req.session.user.username
                 });
             })
         })

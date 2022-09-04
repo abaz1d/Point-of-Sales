@@ -33,7 +33,7 @@ module.exports = function (db) {
 
       res.render('satuan/list', {
         rows,
-
+        userLogin: req.session.user.username,
         query: req.query
       })
     } catch (e) {

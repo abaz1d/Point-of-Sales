@@ -37,8 +37,8 @@ module.exports = function (db) {
       const { rows } = await db.query(sql,values);
 
       res.render('gudang/list', {
-        rows,
-
+        rows, 
+        userLogin: req.session.user.username,
         query: req.query
       })
     } catch (e) {

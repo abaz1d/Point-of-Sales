@@ -38,7 +38,7 @@ module.exports = function (db) {
     })
   });
 
-  router.get('/logout', function (req, res) {
+  router.get('/logout', isLoggedIn, function (req, res) {
     req.session.destroy(function (err) {
       res.redirect('/')
     })
@@ -343,7 +343,8 @@ module.exports = function (db) {
                                       print,
                                       print2,
                                       query: req.query,
-                                      user: req.session.user
+                                      user: req.session.user,
+                                      userLogin: req.session.user.username
                                     })
                                   })
                                 })

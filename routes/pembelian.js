@@ -78,7 +78,8 @@ module.exports = function (db) {
                 detailsb: detailsb.rows,
                 varianb: varianb.rows,
                 print2,
-                query: req.query
+                query: req.query,
+                userLogin: req.session.user.username
             })
         } catch (e) {
             res.send(e)
