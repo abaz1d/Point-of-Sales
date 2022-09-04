@@ -79,7 +79,7 @@ module.exports = function (db) {
                 varianb: varianb.rows,
                 print2,
                 query: req.query,
-                userLogin: req.session.user.username
+                user: req.session.user
             })
         } catch (e) {
             res.send(e)

@@ -33,7 +33,12 @@ module.exports = function (db) {
           return res.redirect('/');
         }
         req.session.user = data.rows[0]
-        res.redirect('/utama');
+        if (req.session.user.role == 'Admin'){
+          res.redirect('/utama');
+        } else {
+          res.redirect('/penjualan');
+        }
+        
       });
     })
   });
@@ -343,8 +348,7 @@ module.exports = function (db) {
                                       print,
                                       print2,
                                       query: req.query,
-                                      user: req.session.user,
-                                      userLogin: req.session.user.username
+                                      user: req.session.user
                                     })
                                   })
                                 })

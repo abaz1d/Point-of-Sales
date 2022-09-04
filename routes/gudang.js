@@ -38,7 +38,7 @@ module.exports = function (db) {
 
       res.render('gudang/list', {
         rows, 
-        userLogin: req.session.user.username,
+        user: req.session.user,
         query: req.query
       })
     } catch (e) {

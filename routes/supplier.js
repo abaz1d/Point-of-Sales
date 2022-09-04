@@ -49,7 +49,7 @@ module.exports = function (db) {
 
             res.render('supplier/list', {
                 rows,
-                userLogin: req.session.user.username,
+                user: req.session.user,
                 query: req.query
             })
         } catch (e) {

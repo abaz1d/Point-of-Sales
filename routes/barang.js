@@ -50,7 +50,7 @@ module.exports = function (db) {
                     varian: varian.rows,
                     rows: barang.rows,
                     query: req.query,
-                    userLogin: req.session.user.username
+                    user: req.session.user
                 });
             })
         })

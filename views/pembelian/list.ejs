@@ -15,6 +15,52 @@
 				<!-- end page title -->
 				<div class="row">
 					<div class="col-xl-4">
+						<% if(user.role === 'Operator') { %>
+						<div class="card overflow-hidden">
+                            <div class="bg-primary bg-soft">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <div class="text-primary p-3">
+                                            <h5 class="text-primary">Halo, <%= user.username.toUpperCase() %></h5>
+                                            <p>Selamat Datang Kembali</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- ==================Tabel Searching = -->
+                            <div class="card-body pt-2 ">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="avatar-md profile-user-wid mb-6">
+                                            <img src="/assets/images/users/avatar-1.jpg" alt=""
+                                                class="img-thumbnail rounded-circle">
+                                        </div>
+                                        <h5 class="font-size-15 text-truncate"><%= user.username %></h5>
+                                        <p class="text-muted mb-0 text-truncate"><%= user.role.toUpperCase() %></p>
+                                    </div>
+
+                                    <div class="col-sm-8">
+                                        <div class="pt-2">
+
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <h5 class="text-muted mb-0">Jam Kerja</h5>
+                                                    <p class="font-size-15">08:00 - 16:00</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h5 class="text-muted mb-0">Catatan</h5>
+                                                    <p class="font-size-15"> - </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+						<% } %>
 						<!-- ==================Searching = -->
 						<div class="card">
 							<div class="card-body">
@@ -175,7 +221,7 @@
 																		<hr class="border border-dark">
 																		<div class="card-body">
 																			<div class="table-responsive overflow-auto">
-																				<h4 class="card-title mb-5">Tabel Detail pembelian <a href="#" class="text-danger"></a></h4>
+																				<h4 class="card-title mb-5">Tabel Detail Pembelian <a href="#" class="text-danger"></a></h4>
 																				<table id="detail-table2" class="table align-middle table-nowrap table-bordered">
 																					<thead class="table-light">
 																						<tr class="info">

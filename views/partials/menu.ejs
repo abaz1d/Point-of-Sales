@@ -170,7 +170,7 @@
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img class="rounded-circle header-profile-user" src="/assets/images/users/avatar-1.jpg"
                             alt="Header Avatar">
-                        <span class="d-none d-xl-inline-block ms-1" key="t-henry"><%= userLogin %></span>
+                        <span class="d-none d-xl-inline-block ms-1" key="t-henry"><%= user.username %></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
@@ -198,6 +198,7 @@
             <div id="sidebar-menu">
                 <!-- Left Menu Start -->
                 <ul class="metismenu list-unstyled" id="side-menu">
+                    <% if(user.role === 'Admin') { %>
                     <li class="menu-title" key="t-menu">Menu</li>
 
                     <li>
@@ -222,6 +223,8 @@
                             <li><a href="/users" key="t-create-new">Users</a></li>
                         </ul>
                     </li>
+                    <% } %>
+
 
                     <li class="menu-title" key="t-apps">Transaksi</li>
 
