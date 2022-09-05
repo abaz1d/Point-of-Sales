@@ -349,7 +349,9 @@
                                                                 <a href="/pembelian?noInvoice=<%= item.no_invoice %>" class="text-primary"><i class="fa-solid fa-print"></i></a>
 																<a href="javascript:void(<%= item.no_invoice %>)"  onClick="editData(`<%= JSON.stringify(item) %>`)" type="button" class="text-success waves-effect waves-light" 
 																data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl"><i class="fa-solid fa-pencil"></i></a>
+																<% if(user.role === 'Admin') { %>
                                                                 <a href="/pembelian/delete/<%= item.no_invoice %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+																<% } %>
 															</div>
 														</td>
 													</tr>
