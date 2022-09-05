@@ -271,7 +271,7 @@ module.exports = function (db) {
 
 
                           //----------------------------------------------------------------------------vPembelian
-                          const { cari_inv2, searchblStartDate2, searchblEndDate2 } = req.query
+                          const { cari_inv2, searchStartDate2, searchEndDate2 } = req.query
                           let searchbl = []
                           let countbl = 1
                           let syntaxbl = []
@@ -284,30 +284,30 @@ module.exports = function (db) {
                             syntaxbl.push(`no_invoice ilike '%' || $${countbl++} || '%'`)
                             countbl++
                           }
-                          if (searchblStartDate2 && searchblEndDate2) {
+                          if (searchStartDate2 && searchEndDate2) {
                             if (!sqlbl.includes(' WHERE ')) {
                               sqlbl += ' WHERE'
                               sqlbl_countbl += ' WHERE'
                             }
-                            searchbl.push(`${searchblStartDate2}`)
-                            searchbl.push(`${searchblEndDate2}`)
+                            searchbl.push(`${searchStartDate2}`)
+                            searchbl.push(`${searchEndDate2}`)
                             syntaxbl.push(` tanggal_pembelian >= $${countbl} AND tanggal_pembelian < $${countbl + 1}`)
                             countbl++
                             countbl++
-                          } else if (searchblStartDate2) {
+                          } else if (searchStartDate2) {
                             if (!sqlbl.includes(' WHERE ')) {
                               sqlbl += ' WHERE'
                               sqlbl_countbl += ' WHERE'
                             }
-                            searchbl.push(`${searchblStartDate2}`)
+                            searchbl.push(`${searchStartDate2}`)
                             syntaxbl.push(` tanggal_pembelian >= $${countbl}`)
                             countbl++
-                          } else if (searchblEndDate2) {
+                          } else if (searchEndDate2) {
                             if (!sqlbl.includes(' WHERE ')) {
                               sqlbl += ' WHERE'
                               sqlbl_countbl += ' WHERE'
                             }
-                            searchbl.push(`${searchblEndDate2}`)
+                            searchbl.push(`${searchEndDate2}`)
                             syntaxbl.push(` tanggal_pembelian <= $${countbl}`)
                             countbl++
                           }
@@ -322,7 +322,7 @@ module.exports = function (db) {
                           sqlbl += ` ORDER BY tanggal_pembelian DESC`
 
                           db.query(sqlbl, searchbl, (err, pembelian) => {
-                            //console.log('rows',rows)
+                            console.log('sqlbl',sqlbl)
                             //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
                             const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
 
