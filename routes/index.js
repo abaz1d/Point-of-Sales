@@ -18,7 +18,10 @@ module.exports = function (db) {
   router.post('/', function (req, res) {
     const { email_user, password } = req.body
     db.query('SELECT * FROM users WHERE email_user = $1', [email_user], (err, data) => {
-      if (err) return res.send(err)
+      if (err) {
+        console.log(err)
+        return res.send(err)
+      }
 
       if (data.rows.length == 0) {
         req.flash('info', 'Email Tidak Terdaftar')
