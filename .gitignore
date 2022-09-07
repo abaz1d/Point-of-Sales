@@ -234,6 +234,7 @@ Temporary Items
 # Ignore all local history of files
 .history
 .ionide
+.env
 
 # Support for Project snippet scope
 .vscode/*.code-snippets
