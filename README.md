@@ -1,5 +1,7 @@
 # Point-of-Sales
-[![Gambar](https://i9.ytimg.com/vi/v_eaAVIbjeU/mq1.jpg?sqp=CIyW6JkG&rs=AOn4CLDSO9yXFX4-r2prp_vtHRzgSo09_w)](https://youtu.be/v_eaAVIbjeU)
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=v_eaAVIbjeU" target="_blank">
+ <img src="http://img.youtube.com/vi/v_eaAVIbjeU/mqdefault.jpg" alt="Watch the video" width="240" height="180" border="10" />
+</a>
 <hr/>
 Link Heroku :
 http://azizpos.herokuapp.com/
