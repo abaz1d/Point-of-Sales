@@ -79,4 +79,4 @@ Youtube Video Preview : https://youtu.be/v_eaAVIbjeU <br/>
 <hr />
 
 ### Screenshots Client Mobile Mode
-<img src="https://user-images.githubusercontent.com/95122515/193998343-67514a7b-16d1-47c0-8e1f-f3a3b71d35bf.png" width="33%"> <img src="https://user-images.githubusercontent.com/95122515/193998474-9f659dac-bd0a-4654-a8ce-6019c3c8cedd.png" width="33%"> <img src="https://user-images.githubusercontent.com/95122515/193998417-27e0c1cc-c1cf-451f-9d82-44998f82c4ef.png" width="33%"> 
+<img src="https://user-images.githubusercontent.com/95122515/193998343-67514a7b-16d1-47c0-8e1f-f3a3b71d35bf.png" width="32%"> <img src="https://user-images.githubusercontent.com/95122515/193998474-9f659dac-bd0a-4654-a8ce-6019c3c8cedd.png" width="32%"> <img src="https://user-images.githubusercontent.com/95122515/193998417-27e0c1cc-c1cf-451f-9d82-44998f82c4ef.png" width="32%"> 
