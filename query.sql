@@ -17,8 +17,8 @@ CREATE OR REPLACE FUNCTION update_penjualan() RETURNS TRIGGER AS $set_penjualan$
             
         ELSIF (TG_OP = 'DELETE') THEN
             --update stok
-            SELECT stok_varian INTO stok_lama FROM varian WHERE id_varian = NEW.id_varian;
-            UPDATE varian SET stok_varian = stok_lama + NEW.qty WHERE id_varian = NEW.id_varian;
+            SELECT stok_varian INTO stok_lama FROM varian WHERE id_varian = OLD.id_varian;
+            UPDATE varian SET stok_varian = stok_lama + OLD.qty WHERE id_varian = OLD.id_varian;
 
         END IF;
         -- update penjualan
@@ -70,8 +70,8 @@ CREATE OR REPLACE FUNCTION update_pembelian() RETURNS TRIGGER AS $set_pembelian$
             
         ELSIF (TG_OP = 'DELETE') THEN
             --update stok
-            SELECT stok_varian INTO stok_lama FROM varian WHERE id_varian = NEW.id_varian;
-            UPDATE varian SET stok_varian = stok_lama - NEW.qty WHERE id_varian = NEW.id_varian;
+            SELECT stok_varian INTO stok_lama FROM varian WHERE id_varian = OLD.id_varian;
+            UPDATE varian SET stok_varian = stok_lama - OLD.qty WHERE id_varian = OLD.id_varian;
 
         END IF;
         -- update pembelian
